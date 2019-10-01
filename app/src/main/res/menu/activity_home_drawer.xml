@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/menu_home" />
+    </group>
+
+    <item android:title="@string/menu_descricao"
+        android:id="@+id/nav_descricao">
+        <menu>
+            <item
+                android:id="@+id/btn_praga"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_praga" />
+            <item
+                android:id="@+id/btn_estagio"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_estagio" />
+            <item
+                android:id="@+id/btn_turma"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_turma" />
+            <item
+                android:id="@+id/btn_tipo_coleta"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_tipo_coleta" />
+        </menu>
+    </item>
+
+</menu>
