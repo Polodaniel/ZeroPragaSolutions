@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtLogin.requestFocus();
     }
 
-
+        // ola
     private void AbreTelaPrincipal()
     {
         Intent telaPrincipal = new Intent(this, HomeActivity.class);
