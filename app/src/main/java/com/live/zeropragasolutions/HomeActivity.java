@@ -1,6 +1,7 @@
 package com.live.zeropragasolutions;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.live.zeropragasolutions.Activity.PragaActivity;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -114,13 +116,16 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.btn_praga) {
-
+            AbreTelaPraga();
         } else if (id == R.id.btn_estagio) {
 
         } else if (id == R.id.btn_turma) {
 
         } else if (id == R.id.btn_tipo_coleta) {
 
+        } else if ( id == R.id.nav_sair )
+        {
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -150,5 +155,11 @@ public class HomeActivity extends AppCompatActivity
         } catch (Exception ex) {
 
         }
+    }
+
+    private void AbreTelaPraga()
+    {
+        Intent telaPraga = new Intent(this, PragaActivity.class);
+        startActivity(telaPraga);
     }
 }

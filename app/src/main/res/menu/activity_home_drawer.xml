@@ -32,4 +32,13 @@
         </menu>
     </item>
 
+    <group android:checkableBehavior="single"
+           android:layout_gravity="bottom">
+        <item
+            android:id="@+id/nav_sair"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="@string/menu_sair"
+            android:layout_gravity="bottom"/>
+    </group>
+
 </menu>
