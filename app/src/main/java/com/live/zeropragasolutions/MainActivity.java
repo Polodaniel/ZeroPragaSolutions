@@ -12,9 +12,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.live.zeropragasolutions.Auxiliares.Mensagens;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
+import com.live.zeropragasolutions.Model.Usuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ObjetoLogin retornoLogin = new ObjetoLogin();
 
+    List<Usuario> user = new ArrayList<Usuario>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         inicializaComponenetes();
         inicializaEventos();
+
+        CriaUsuarioTeste();
     }
 
     @Override
@@ -44,25 +52,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btnLogin:
 
-                // Busca Login
-                // Valida Lgin
+                String Login = txtLogin.getText().toString();
+                String Senha = txtSenha.getText().toString();
 
-                Boolean Valido = true;
+                Usuario Valido = BuscaUsuario(Login,Senha);
 
-                // User
-                retornoLogin = new ObjetoLogin(1,"900150983cd24fb0d6963f7d28e17f72");
-
-                // Admin
-                //retornoLogin = new ObjetoLogin(0,"900150983cd24fb0d6963f7d28e17f72");
-
-                if(Valido == true)
-                {
-                    retornoLogin.get_tipoConta();
-                    AbreTelaPrincipal();
+                if(Valido != null) {
+                    if (Valido.getStatusRetorno() == true) {
+                        retornoLogin.set_tipoConta(Valido.get_tipoConta());
+                        AbreTelaPrincipal();
+                    } else {
+                        Mensagens.mostraMensagem(this, R.string.UsuarioErro);
+                    }
                 }
-                else
-                {
+                else {
 
+                    Mensagens.mostraMensagem(this, R.string.UsuarioErro);
                 }
 
                 break;
@@ -105,4 +110,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(telaPrincipal, REQUEST_ATUALIZACAO_LOGIN);
     }
 
+    private void CriaUsuarioTeste()
+    {
+        Usuario newUser1 = new Usuario();
+        Usuario newUser2 = new Usuario();
+
+        newUser1 = new Usuario(0,"Daniel","user","user",0);
+        newUser2 = new Usuario(1,"Jessica","adm","adm",1);
+
+        user.add(newUser1);
+        user.add(newUser2);
+    }
+
+    private Usuario BuscaUsuario(String Login , String Senha)
+    {
+        for(Usuario x : user) {
+
+            String l = x.get_loginUsuario();
+            String s = x.get_senha();
+
+            if(l.equals(Login) && s.equals(Senha)) {
+                x.setStatusRetorno(true);
+                return x;
+            }
+        }
+
+        return null;
+    }
 }
