@@ -26,5 +26,6 @@
     <string name="title_activity_praga">Cadastro de Praga</string>
     <string name="title_activity_praga_new">Nova Praga</string>
     <string name="SalvarSucesso">Salvado com Sucesso !</string>
+    <string name="UsuarioErro">Login ou Senha Invalido !</string>
 
 </resources>
