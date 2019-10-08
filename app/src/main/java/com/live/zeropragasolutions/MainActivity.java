@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (Valido.getStatusRetorno() == true) {
                         retornoLogin.set_tipoConta(Valido.get_tipoConta());
                         AbreTelaPrincipal();
+                        finish();
                     } else {
                         Mensagens.mostraMensagem(this, R.string.UsuarioErro);
                     }
