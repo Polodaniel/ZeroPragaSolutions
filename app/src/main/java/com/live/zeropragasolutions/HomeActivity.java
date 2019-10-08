@@ -9,8 +9,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
