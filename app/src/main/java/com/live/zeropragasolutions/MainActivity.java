@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<Usuario> user = new ArrayList<Usuario>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
         switch (view.getId()) {
             case R.id.btnLogin:
 
@@ -79,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @SuppressLint("WrongViewCast")
-    private void inicializaComponenetes() {
+    private void inicializaComponenetes()
+    {
         btnLogar = findViewById(R.id.btnLogin);
         btnLimpar = findViewById(R.id.btnLimpar);
         txtLogin = findViewById(R.id.txtEmail);
@@ -88,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lblErroSenha = findViewById(R.id.msgSenhaErro);
     }
 
-    private void inicializaEventos() {
+    private void inicializaEventos()
+    {
         btnLogar.setOnClickListener(this);
         btnLimpar.setOnClickListener(this);
     }
@@ -103,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtLogin.requestFocus();
     }
 
-        // ola
     private void AbreTelaPrincipal()
     {
         Intent telaPrincipal = new Intent(this, HomeActivity.class);
