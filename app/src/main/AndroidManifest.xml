@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.live.zeropragasolutions">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +13,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Activity.TipoColetaNewActivity"
+            android:label="@string/title_activity_tipo_coleta_new"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.TipoColetaActivity"
+            android:label="@string/title_activity_tipo_coleta"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.TurmaNewActivity"
+            android:label="@string/title_activity_turma_new"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.TurmaActivity"
+            android:label="@string/title_activity_turma"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.EstagioNewActivity"
+            android:label="@string/title_activity_estagio_new"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.EstagioActivity"
+            android:label="@string/title_activity_estagio"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +56,7 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 </manifest>
