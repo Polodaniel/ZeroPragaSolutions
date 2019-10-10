@@ -27,11 +27,11 @@
     <string name="title_activity_praga_new">Nova Praga</string>
     <string name="SalvarSucesso">Salvado com Sucesso !</string>
     <string name="UsuarioErro">Login ou Senha Invalido !</string>
-    <string name="title_activity_estagio">EstagioActivity</string>
-    <string name="title_activity_estagio_new">EstagioNewActivity</string>
-    <string name="title_activity_turma">TurmaActivity</string>
-    <string name="title_activity_turma_new">TurmaNewActivity</string>
-    <string name="title_activity_tipo_coleta">TipoColetaActivity</string>
-    <string name="title_activity_tipo_coleta_new">TipoColetaNewActivity</string>
+    <string name="title_activity_estagio">Estagio</string>
+    <string name="title_activity_estagio_new">Novo Estagio</string>
+    <string name="title_activity_turma">Turma</string>
+    <string name="title_activity_turma_new">Nova Turma</string>
+    <string name="title_activity_tipo_coleta">Tipo de Coleta</string>
+    <string name="title_activity_tipo_coleta_new">Novo Tipo de Coleta</string>
 
 </resources>
