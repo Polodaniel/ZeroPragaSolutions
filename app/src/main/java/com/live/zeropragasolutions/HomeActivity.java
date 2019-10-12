@@ -15,7 +15,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.live.zeropragasolutions.Activity.EstagioActivity;
 import com.live.zeropragasolutions.Activity.PragaActivity;
+import com.live.zeropragasolutions.Activity.TipoColetaActivity;
+import com.live.zeropragasolutions.Activity.TurmaActivity;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -116,11 +119,11 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.btn_praga) {
             AbreTelaPraga();
         } else if (id == R.id.btn_estagio) {
-
+            AbreTelaEstagio();
         } else if (id == R.id.btn_turma) {
-
+            AbreTelaTurma();
         } else if (id == R.id.btn_tipo_coleta) {
-
+            AbreTelaTipooColeta();
         } else if ( id == R.id.nav_sair )
         {
             finish();
@@ -159,5 +162,23 @@ public class HomeActivity extends AppCompatActivity
     {
         Intent telaPraga = new Intent(this, PragaActivity.class);
         startActivity(telaPraga);
+    }
+
+    private void AbreTelaEstagio()
+    {
+        Intent telaEstagio = new Intent(this, EstagioActivity.class);
+        startActivity(telaEstagio);
+    }
+
+    private void AbreTelaTipooColeta()
+    {
+        Intent telaTipoColeta = new Intent(this, TipoColetaActivity.class);
+        startActivity(telaTipoColeta);
+    }
+
+    private void AbreTelaTurma()
+    {
+        Intent telaTurma = new Intent(this, TurmaActivity.class);
+        startActivity(telaTurma);
     }
 }

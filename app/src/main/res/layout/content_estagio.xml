@@ -8,4 +8,13 @@
     tools:context=".Activity.EstagioActivity"
     tools:showIn="@layout/activity_estagio">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
