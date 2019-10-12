@@ -1,5 +1,6 @@
 package com.live.zeropragasolutions.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,11 +25,12 @@ public class TurmaActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+            public void onClick(View view) {AbreTelaTurmaNew();    }
         });
     }
-
+    private void AbreTelaTurmaNew()
+    {
+        Intent telaTurmaNew = new Intent(this, TurmaNewActivity.class);
+        startActivity(telaTurmaNew);
+    }
 }
