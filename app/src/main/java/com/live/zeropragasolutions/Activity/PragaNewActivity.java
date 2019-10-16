@@ -20,16 +20,19 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.live.zeropragasolutions.Auxiliares.Mensagens;
 import com.live.zeropragasolutions.MainActivity;
+import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.R;
 import com.live.zeropragasolutions.SplashScreen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.Serializable;
 
 public class PragaNewActivity extends AppCompatActivity {
 
@@ -38,8 +41,13 @@ public class PragaNewActivity extends AppCompatActivity {
     private FloatingActionButton btnExcluirImagem;
     private FloatingActionButton btnMenu;
     private ImageView ImagemTirada;
+    private EditText txtCodigo;
+    private EditText txtNome;
+    private EditText txtDescricao;
     private Bitmap img;
     private int indiceMenu = 0;
+
+    private Praga praga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +78,8 @@ public class PragaNewActivity extends AppCompatActivity {
                 AbrirFecharMenu();
             }
         });
+
+        carregaInformacoesPassadasPorParametro();
     }
 
     private void InicializaComponentes()
@@ -79,11 +89,27 @@ public class PragaNewActivity extends AppCompatActivity {
         btnExcluirImagem = findViewById(R.id.btnRemoverImagem);
         btnMenu = findViewById(R.id.btnMenu);
         ImagemTirada = (ImageView) findViewById(R.id.imgPraga);
+        txtCodigo = findViewById(R.id.txtCodigo);
+        txtNome = findViewById(R.id.txtNome);
+        txtDescricao = findViewById(R.id.txtDescricao);
     }
 
     private void SalvarPraga()
     {
+        Praga minhaPraga = new Praga();
+        minhaPraga.setID(Integer.parseInt(txtCodigo.getText().toString()));
+        minhaPraga.setNome(txtNome.getText().toString());
+        minhaPraga.setDescricao(txtDescricao.getText().toString());
+
         Mensagens.mostraMensagem(this, R.string.SalvarSucesso);
+
+        Intent data = new Intent();
+        data.putExtra(Praga.EXTRA_NAME, minhaPraga);
+        //
+        setResult(RESULT_OK, data);
+
+        this.finish();
+
     }
 
     public void tirarFoto() {
@@ -181,5 +207,23 @@ public class PragaNewActivity extends AppCompatActivity {
 
             indiceMenu = 0;
         }
+    }
+
+    private void carregaInformacoesPassadasPorParametro()
+    {
+        Serializable objetoPassado = getIntent().getSerializableExtra(Praga.EXTRA_NAME);
+        if(objetoPassado != null)
+        {
+            praga = (Praga) objetoPassado;
+            carregaInformacoesParaAtualizacao();
+        }
+    }
+
+    private void carregaInformacoesParaAtualizacao()
+    {
+        txtCodigo.setEnabled(false);
+        txtCodigo.setText(praga.getID().toString());
+        txtNome.setText(praga.getNome());
+        txtDescricao.setText(praga.getDescricao());
     }
 }
