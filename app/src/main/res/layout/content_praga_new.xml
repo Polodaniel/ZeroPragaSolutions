@@ -8,7 +8,6 @@
     tools:context=".Activity.PragaNewActivity"
     tools:showIn="@layout/activity_praga_new">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -150,4 +149,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
