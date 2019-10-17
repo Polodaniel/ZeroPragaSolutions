@@ -17,11 +17,13 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PragaActivity extends AppCompatActivity {
 
@@ -31,7 +33,7 @@ public class PragaActivity extends AppCompatActivity {
     private FloatingActionButton btAdicionar;
     private RecyclerView rvInformacoes;
     //
-    private ArrayList<Praga> listaPragas = new ArrayList<>();
+    private List<Praga> listaPragas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,16 @@ public class PragaActivity extends AppCompatActivity {
 
         inicializaComponentes();
 
+        carregaInformacoes();
+
         inicializaAdapter();
+
+    }
+
+    private void carregaInformacoes() {
+
+        listaPragas = AppDataBase.getInstance(this).getPragaDao().listaPragas();
+
 
     }
 
