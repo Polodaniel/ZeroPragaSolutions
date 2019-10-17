@@ -1,9 +1,16 @@
 package com.live.zeropragasolutions.Model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity
 public class Praga implements Serializable
 {
+    @Ignore
     public static final String EXTRA_NAME = "PRAGA";
 
     public Praga() {}
@@ -15,12 +22,16 @@ public class Praga implements Serializable
         _status = true;
     }
 
+    @PrimaryKey(autoGenerate = true)
     public Integer ID;
 
+    @ColumnInfo
     public String Nome;
 
+    @ColumnInfo
     public String Descricao;
 
+    @ColumnInfo
     private boolean _status;
 
 
@@ -57,4 +68,11 @@ public class Praga implements Serializable
 
         }
 
+    public boolean is_status() {
+        return _status;
+    }
+
+    public void set_status(boolean _status) {
+        this._status = _status;
+    }
 }

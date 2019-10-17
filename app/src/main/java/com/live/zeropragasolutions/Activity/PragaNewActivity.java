@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.live.zeropragasolutions.Auxiliares.Mensagens;
+import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.MainActivity;
 import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.R;
@@ -82,8 +83,7 @@ public class PragaNewActivity extends AppCompatActivity {
         carregaInformacoesPassadasPorParametro();
     }
 
-    private void InicializaComponentes()
-    {
+    private void InicializaComponentes() {
         btnSalvar = findViewById(R.id.fab);
         btnSelecionarImagem = findViewById(R.id.btnSelecionarImagem);
         btnExcluirImagem = findViewById(R.id.btnRemoverImagem);
@@ -94,21 +94,46 @@ public class PragaNewActivity extends AppCompatActivity {
         txtDescricao = findViewById(R.id.txtDescricao);
     }
 
-    private void SalvarPraga()
-    {
-        Praga minhaPraga = new Praga();
-        minhaPraga.setID(Integer.parseInt(txtCodigo.getText().toString()));
-        minhaPraga.setNome(txtNome.getText().toString());
-        minhaPraga.setDescricao(txtDescricao.getText().toString());
+    private void SalvarPraga() {
+        boolean resultado = false;
+        Praga minhaPraga;
 
-        Mensagens.mostraMensagem(this, R.string.SalvarSucesso);
+        if (praga == null) {
+            minhaPraga = new Praga();
+            minhaPraga.setNome(txtNome.getText().toString());
+            minhaPraga.setDescricao(txtDescricao.getText().toString());
 
-        Intent data = new Intent();
-        data.putExtra(Praga.EXTRA_NAME, minhaPraga);
-        //
-        setResult(RESULT_OK, data);
 
-        this.finish();
+            long[] retorno = AppDataBase.getInstance(this).getPragaDao().insert(minhaPraga);
+
+            if(retorno.length > 0 ) {
+                resultado = true;
+
+                minhaPraga.setID((int) retorno[0]);
+
+            }
+        } else {
+            praga.setNome(txtNome.getText().toString());
+            praga.setDescricao(txtDescricao.getText().toString());
+            minhaPraga = praga;
+            int retorno = AppDataBase.getInstance(this).getPragaDao().update(praga);
+
+            if(retorno > 0){
+                resultado = true;
+            }
+        }
+
+
+        if (resultado) {
+            Mensagens.mostraMensagem(this, R.string.SalvarSucesso);
+
+            Intent data = new Intent();
+            data.putExtra(Praga.EXTRA_NAME, minhaPraga);
+            //
+            setResult(RESULT_OK, data);
+
+            this.finish();
+        }
 
     }
 
@@ -141,7 +166,7 @@ public class PragaNewActivity extends AppCompatActivity {
     }
 
     private String geRealPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null,null,null,null);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
@@ -157,70 +182,78 @@ public class PragaNewActivity extends AppCompatActivity {
 
     @SuppressLint("RestrictedApi")
     private void AbrirFecharMenu() {
-        if(indiceMenu == 0 ) {
+        if (indiceMenu == 0) {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnSalvar.setVisibility(View.VISIBLE);
                 }
-            },100);
+            }, 100);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnExcluirImagem.setVisibility(View.VISIBLE);
                 }
-            },300);
+            }, 300);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnSelecionarImagem.setVisibility(View.VISIBLE);
                 }
-            },500);
+            }, 500);
 
             indiceMenu = 1;
-        }
-        else
-        {
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnSelecionarImagem.setVisibility(View.INVISIBLE);
                 }
-            },100);
+            }, 100);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnExcluirImagem.setVisibility(View.INVISIBLE);
                 }
-            },300);
+            }, 300);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnSalvar.setVisibility(View.INVISIBLE);
                 }
-            },500);
+            }, 500);
 
             indiceMenu = 0;
         }
     }
 
-    private void carregaInformacoesPassadasPorParametro()
-    {
+    private void carregaInformacoesPassadasPorParametro() {
         Serializable objetoPassado = getIntent().getSerializableExtra(Praga.EXTRA_NAME);
-        if(objetoPassado != null)
-        {
+        if (objetoPassado != null) {
             praga = (Praga) objetoPassado;
             carregaInformacoesParaAtualizacao();
         }
+        else
+        {
+            buscaProximoCodigo();
+        }
     }
 
-    private void carregaInformacoesParaAtualizacao()
-    {
+    private void buscaProximoCodigo() {
+
+        txtCodigo.setEnabled(false);
+
+        txtCodigo.setText(AppDataBase.getInstance(this).getPragaDao().getProximoCodigo().toString());
+
+
+    }
+
+    private void carregaInformacoesParaAtualizacao() {
         txtCodigo.setEnabled(false);
         txtCodigo.setText(praga.getID().toString());
         txtNome.setText(praga.getNome());
