@@ -34,7 +34,7 @@
                 android:hint="1"
                 android:text="Código:"
                 android:textColor="#020202"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvCodigo"
@@ -43,7 +43,7 @@
                 android:hint="1"
                 android:text="CODIGO"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -60,15 +60,37 @@
                 android:hint="1"
                 android:text="Status:"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvStatus"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="STATUS"
+                android:hint="1"
+                android:layout_weight="1"
+                android:layout_marginRight="60dp"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lblTipoConta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:hint="1"
+                android:text="Conta:"
+                android:textColor="#000000"
+                android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTipoConta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONTA"
+                android:hint="1"
+                android:textColor="#000000"
+                android:textSize="13sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

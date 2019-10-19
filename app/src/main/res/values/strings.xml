@@ -33,5 +33,10 @@
     <string name="title_activity_turma_new">Nova Turma</string>
     <string name="title_activity_tipo_coleta">Tipo de Coleta</string>
     <string name="title_activity_tipo_coleta_new">Novo Tipo de Coleta</string>
+    <string name="SalvarErro">Erro ao Salvar !</string>
+    <string name="title_activity_usuario">Usuários</string>
+    <string name="title_activity_usuario_new">Novo Usuário</string>
+    <string name="LoginErro">Login ou Senha Invalido !</string>
+    <string name="menu_usuario">Usuário</string>
 
 </resources>

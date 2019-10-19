@@ -29,6 +29,10 @@
                 android:id="@+id/btn_tipo_coleta"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_tipo_coleta" />
+            <item
+                android:id="@+id/btn_usuario"
+                android:icon="@android:drawable/ic_menu_myplaces"
+                android:title="@string/menu_usuario" />
         </menu>
     </item>
 
