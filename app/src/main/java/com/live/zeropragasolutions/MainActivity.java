@@ -6,13 +6,18 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
+import com.live.zeropragasolutions.Activity.UsuarioActivity;
 import com.live.zeropragasolutions.Auxiliares.Mensagens;
+import com.live.zeropragasolutions.Dao.UsuarioDao;
+import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
 import com.live.zeropragasolutions.Model.Usuario;
 
@@ -30,10 +35,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AppCompatButton   btnLimpar;
     private AppCompatTextView lblErroEmail;
     private AppCompatTextView lblErroSenha;
+    private CardView cardCriarUsuario;
+    private TextView lblCriaUsuario;
 
-    ObjetoLogin retornoLogin = new ObjetoLogin();
+    Usuario retornoLogin;
 
     List<Usuario> user = new ArrayList<Usuario>();
+
+    UsuarioDao contexto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,9 +52,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         inicializaComponenetes();
+
+        validaQtdeUsuario();
+
         inicializaEventos();
 
-        CriaUsuarioTeste();
+    }
+
+    private void validaQtdeUsuario() {
+
+        List<Usuario> users = contexto.listaUsuarios();
+
+        if(users.size() <= 0)
+        {
+            cardCriarUsuario.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            cardCriarUsuario.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -54,28 +79,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btnLogin:
 
-                String Login = txtLogin.getText().toString();
-                String Senha = txtSenha.getText().toString();
+                String user = txtLogin.getText().toString();
+                String psd = txtSenha.getText().toString();
 
-                Usuario Valido = BuscaUsuario(Login,Senha);
+                retornoLogin = contexto.buscaUsuario(user,psd);
 
-                if(Valido != null) {
-                    if (Valido.getStatusRetorno() == true) {
-                        retornoLogin.set_tipoConta(Valido.get_tipoConta());
-                        AbreTelaPrincipal();
-                        finish();
-                    } else {
-                        Mensagens.mostraMensagem(this, R.string.UsuarioErro);
-                    }
-                }
-                else {
-
-                    Mensagens.mostraMensagem(this, R.string.UsuarioErro);
-                }
+                if(retornoLogin != null)
+                    AbreTelaPrincipal();
+                else
+                    Mensagens.mostraMensagem(this, R.string.LoginErro);
 
                 break;
             case R.id.btnLimpar:
                 limparComponentes();
+                break;
+
+            case R.id.lblCriaNovoUsuario:
+                AbreTelaCriarUsuario();
                 break;
         }
     }
@@ -89,12 +109,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtSenha = findViewById(R.id.txtSenha);
         lblErroEmail = findViewById(R.id.msgEmailErro);
         lblErroSenha = findViewById(R.id.msgSenhaErro);
+        lblCriaUsuario = findViewById(R.id.lblCriaNovoUsuario);
+
+        cardCriarUsuario = findViewById(R.id.cardCriarUsuario);
+
+        contexto = AppDataBase.getInstance(this).getUsuarioDao();
     }
 
     private void inicializaEventos()
     {
         btnLogar.setOnClickListener(this);
         btnLimpar.setOnClickListener(this);
+        lblCriaUsuario.setOnClickListener(this);
+
     }
 
     private void limparComponentes()
@@ -110,35 +137,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void AbreTelaPrincipal()
     {
         Intent telaPrincipal = new Intent(this, HomeActivity.class);
-        telaPrincipal.putExtra(ObjetoLogin.EXTRA_NAME, retornoLogin);
+        telaPrincipal.putExtra(Usuario.EXTRA_NAME, retornoLogin);
         startActivityForResult(telaPrincipal, REQUEST_ATUALIZACAO_LOGIN);
     }
 
-    private void CriaUsuarioTeste()
+    private void AbreTelaCriarUsuario()
     {
-        Usuario newUser1 = new Usuario();
-        Usuario newUser2 = new Usuario();
-
-        newUser1 = new Usuario(0,"Daniel","user","user",0);
-        newUser2 = new Usuario(1,"Jessica","adm","adm",1);
-
-        user.add(newUser1);
-        user.add(newUser2);
-    }
-
-    private Usuario BuscaUsuario(String Login , String Senha)
-    {
-        for(Usuario x : user) {
-
-            String l = x.get_loginUsuario();
-            String s = x.get_senha();
-
-            if(l.equals(Login) && s.equals(Senha)) {
-                x.setStatusRetorno(true);
-                return x;
-            }
-        }
-
-        return null;
+        Intent tela = new Intent(this, UsuarioActivity.class);
+        startActivity(tela);
     }
 }

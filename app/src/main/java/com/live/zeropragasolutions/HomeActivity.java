@@ -19,7 +19,9 @@ import com.live.zeropragasolutions.Activity.EstagioActivity;
 import com.live.zeropragasolutions.Activity.PragaActivity;
 import com.live.zeropragasolutions.Activity.TipoColetaActivity;
 import com.live.zeropragasolutions.Activity.TurmaActivity;
+import com.live.zeropragasolutions.Activity.UsuarioActivity;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
+import com.live.zeropragasolutions.Model.Usuario;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -27,16 +29,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     // Variaveis
-    ObjetoLogin meuCadastro = new ObjetoLogin();
+    Usuario meuCadastro = new Usuario();
 
     // Botões
     private  NavigationView navigationView;
     private FloatingActionButton btnNovo;
+
+    private TextView lblMensagemHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +79,19 @@ public class HomeActivity extends AppCompatActivity
         // Monta Menu User / Admin
         montaMenuUserAdmin();
 
+        montaMensagemBoasVindas();
+
+    }
+
+    private void montaMensagemBoasVindas() {
+
+        SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy");
+
+        Date data = new Date();
+
+        String dataAtual = formataData.format(data);
+
+        lblMensagemHome.setText("Seja Bem Vindo " + meuCadastro.getNome() +" hoje é dia " + dataAtual + " .");
     }
 
     @Override
@@ -85,12 +108,6 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
-
-        // Inicializa os Botões
-        //inicializaComponenetes();
-
-        // Monta Menu User / Admin
-        //montaMenuUserAdmin();
 
         return true;
     }
@@ -124,8 +141,9 @@ public class HomeActivity extends AppCompatActivity
             AbreTelaTurma();
         } else if (id == R.id.btn_tipo_coleta) {
             AbreTelaTipooColeta();
-        } else if ( id == R.id.nav_sair )
-        {
+        } else if( id == R.id.btn_usuario){
+            AbreTelaUsuario();
+        } else if( id == R.id.nav_sair ) {
             finish();
         }
 
@@ -135,20 +153,21 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void carregaInformacoesTela() {
-        meuCadastro = (ObjetoLogin) getIntent().getSerializableExtra(ObjetoLogin.EXTRA_NAME);
+        meuCadastro = (Usuario) getIntent().getSerializableExtra(Usuario.EXTRA_NAME);
     }
 
     private void inicializaComponenetes() {
         btnNovo = (FloatingActionButton) findViewById(R.id.fab);
+        lblMensagemHome = findViewById(R.id.lblMensagemHome);
     }
 
     @SuppressLint("RestrictedApi")
     private void montaMenuUserAdmin() {
         try {
 
-            if (meuCadastro.get_tipoConta() == 0) {
+            if (meuCadastro.getTipoConta() == 0) {
                 navigationView.getMenu().findItem(R.id.nav_descricao).setVisible(false);
-            } else if (meuCadastro.get_tipoConta() == 1) {
+            } else if (meuCadastro.getTipoConta() == 1) {
                 navigationView.getMenu().findItem(R.id.nav_descricao).setVisible(true);
                 btnNovo.setVisibility(View.INVISIBLE);
             }
@@ -180,5 +199,11 @@ public class HomeActivity extends AppCompatActivity
     {
         Intent telaTurma = new Intent(this, TurmaActivity.class);
         startActivity(telaTurma);
+    }
+
+    private void AbreTelaUsuario()
+    {
+        Intent telaUsuario = new Intent(this, UsuarioActivity.class);
+        startActivity(telaUsuario);
     }
 }

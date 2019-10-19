@@ -134,6 +134,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardCriarUsuario"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:ignore="MissingConstraints"
@@ -142,6 +143,7 @@
             android:layout_marginTop="5dp">
 
                  <TextView
+                     android:id="@+id/lblCriaNovoUsuario"
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:text="Criar Novo Usuario"

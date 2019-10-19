@@ -13,15 +13,16 @@ import java.util.List;
 @Dao
 public interface PragaDao {
 
-    @Query("SELECT * FROM Praga")
-    public List<Praga> listaPragas();
-
     @Insert
     public long[] insert(Praga... values);
 
     @Update
     public int update(Praga... values);
 
+    @Query("SELECT * FROM Praga")
+    public List<Praga> listaPragas();
+
     @Query("SELECT IFNULL(MAX(id),0)+1 FROM Praga")
     public Integer getProximoCodigo();
+
 }

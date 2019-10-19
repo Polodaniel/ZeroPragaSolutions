@@ -18,28 +18,33 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.live.zeropragasolutions.Dao.PragaDao;
+import com.live.zeropragasolutions.Dao.UsuarioDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.Praga;
+import com.live.zeropragasolutions.Model.Usuario;
 import com.live.zeropragasolutions.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PragaActivity extends AppCompatActivity {
+public class UsuarioActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CADASTRO_PRAGA = 1;
-    private static final int REQUEST_ATUALIZACAO_PRAGA = 2;
-    //
+    private static final int REQUEST_CADASTRO_USUARIO = 1;
+    private static final int REQUEST_ATUALIZACAO_USUARIO = 2;
+
     private FloatingActionButton btAdicionar;
     private RecyclerView rvInformacoes;
-    //
-    private List<Praga> listaPragas = new ArrayList<>();
+
+    private List<Usuario> listaUsuario = new ArrayList<>();
+
+    UsuarioDao contexto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_praga);
+        setContentView(R.layout.activity_usuario);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,7 +52,7 @@ public class PragaActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AbreTelaPragaNew();
+                AbreTelaUsuarioNew();
             }
         });
 
@@ -57,25 +62,27 @@ public class PragaActivity extends AppCompatActivity {
 
         inicializaAdapter();
 
+
     }
 
     private void carregaInformacoes() {
-        listaPragas = AppDataBase.getInstance(this).getPragaDao().listaPragas();
+        listaUsuario = contexto.listaUsuarios();
     }
 
-    private void AbreTelaPragaNew()
+    private void AbreTelaUsuarioNew()
     {
-        Intent telaPragaNew = new Intent(PragaActivity.this, PragaNewActivity.class);
-        startActivityForResult(telaPragaNew, REQUEST_CADASTRO_PRAGA);
+        Intent tela = new Intent(UsuarioActivity.this, UsuarioNewActivity.class);
+        startActivityForResult(tela, REQUEST_CADASTRO_USUARIO);
     }
 
     private void inicializaComponentes() {
+        contexto = AppDataBase.getInstance(this).getUsuarioDao();
         rvInformacoes = findViewById(R.id.rvInformacoes);
     }
 
     private void inicializaAdapter()
     {
-        MeuAdapter meuAdapter = new MeuAdapter();
+        UsuarioActivity.MeuAdapter meuAdapter = new UsuarioActivity.MeuAdapter();
         rvInformacoes.setAdapter(meuAdapter);
     }
 
@@ -84,12 +91,14 @@ public class PragaActivity extends AppCompatActivity {
         private AppCompatTextView tvCodigo;
         private AppCompatTextView tvNome;
         private AppCompatTextView tvStatus;
+        private AppCompatTextView tvTipoConta;
 
         public MeuHolder(@NonNull View itemView) {
             super(itemView);
             tvCodigo = itemView.findViewById(R.id.tvCodigo);
             tvNome = itemView.findViewById(R.id.tvNome);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvTipoConta = itemView.findViewById(R.id.tvTipoConta);
 
             if(itemView.findViewById(R.id.tvStatus).toString() == "true")
                 tvStatus.setTextColor(Color.GREEN);
@@ -98,32 +107,37 @@ public class PragaActivity extends AppCompatActivity {
         }
     }
 
-    private class MeuAdapter extends RecyclerView.Adapter<MeuHolder>
+    private class MeuAdapter extends RecyclerView.Adapter<UsuarioActivity.MeuHolder>
     {
         @NonNull
         @Override
-        public MeuHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            MeuHolder meuHolder
-                    = new MeuHolder(getLayoutInflater().inflate(R.layout.item_cadastro, parent, false));
+        public UsuarioActivity.MeuHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            UsuarioActivity.MeuHolder meuHolder
+                    = new UsuarioActivity.MeuHolder(getLayoutInflater().inflate(R.layout.item_cadastro_usuario, parent, false));
             return meuHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MeuHolder holder,final int position) {
-            final Praga praga = listaPragas.get(position);
-            holder.tvNome.setText(praga.getNome().toString());
-            holder.tvCodigo.setText(praga.getID().toString());
-            holder.tvStatus.setText(praga.getStatus().toString());
+        public void onBindViewHolder(@NonNull UsuarioActivity.MeuHolder holder, final int position) {
+            final Usuario user = listaUsuario.get(position);
+            holder.tvNome.setText(user.getNome().toString());
+            holder.tvCodigo.setText(user.getID().toString());
+            holder.tvStatus.setText(user.getStatus().toString());
 
-            if(praga.getStatus().toString() == "Ativo")
+            if(user.getTipoConta() == 0)
+                holder.tvTipoConta.setText("Fiscal");
+            else if(user.getTipoConta() == 1)
+                holder.tvTipoConta.setText("Administrador");
+
+            if(user.getStatus().toString() == "Ativo")
                 holder.tvStatus.setTextColor(Color.GREEN);
-            else if(praga.getStatus().toString() == "Inativo")
+            else if(user.getStatus().toString() == "Inativo")
                 holder.tvStatus.setTextColor(Color.RED);
 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listaPragas.remove(position);
+                    listaUsuario.remove(position);
                     notifyItemRemoved(position);
                     return true;
                 }
@@ -133,16 +147,16 @@ public class PragaActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent telaCadastro = new Intent(PragaActivity.this, PragaNewActivity.class);
-                    telaCadastro.putExtra(Praga.EXTRA_NAME, (Serializable) praga);
-                    startActivityForResult(telaCadastro, REQUEST_ATUALIZACAO_PRAGA);
+                    Intent telaCadastro = new Intent(UsuarioActivity.this, UsuarioNewActivity.class);
+                    telaCadastro.putExtra(Usuario.EXTRA_NAME, (Serializable) user);
+                    startActivityForResult(telaCadastro, REQUEST_ATUALIZACAO_USUARIO);
                 }
             });
         }
 
         @Override
         public int getItemCount() {
-            return listaPragas.size();
+            return listaUsuario.size();
         }
     }
 
@@ -150,25 +164,25 @@ public class PragaActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode)
         {
-            case REQUEST_CADASTRO_PRAGA:
+            case REQUEST_CADASTRO_USUARIO:
                 if(resultCode == RESULT_OK)
                 {
-                    Praga pragaRetornada = (Praga) data.getSerializableExtra(Praga.EXTRA_NAME);
-                    listaPragas.add(0, pragaRetornada);
+                    Usuario usuario = (Usuario) data.getSerializableExtra(Usuario.EXTRA_NAME);
+                    listaUsuario.add(0, usuario);
                     rvInformacoes.getAdapter().notifyItemInserted(0);
                 }
                 break;
-            case REQUEST_ATUALIZACAO_PRAGA:
+            case REQUEST_ATUALIZACAO_USUARIO:
                 if(resultCode == RESULT_OK)
                 {
-                    final Praga pragaRetornada = (Praga) data.getSerializableExtra(Praga.EXTRA_NAME);
+                    final Usuario usuario = (Usuario) data.getSerializableExtra(Usuario.EXTRA_NAME);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            for(int i =0; i < listaPragas.size(); i++) {
-                                if(listaPragas.get(i).getID().equals(pragaRetornada.getID()))
+                            for(int i =0; i < listaUsuario.size(); i++) {
+                                if(listaUsuario.get(i).getID().equals(usuario.getID()))
                                 {
-                                    listaPragas.set(i, pragaRetornada);
+                                    listaUsuario.set(i, usuario);
                                     rvInformacoes.getAdapter().notifyItemChanged(i);
                                     break;
                                 }
@@ -180,4 +194,5 @@ public class PragaActivity extends AppCompatActivity {
                 break;
         }
     }
+
 }

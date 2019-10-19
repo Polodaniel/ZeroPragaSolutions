@@ -1,9 +1,7 @@
 package com.live.zeropragasolutions.Activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,48 +10,52 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.live.zeropragasolutions.Auxiliares.Mensagens;
+import com.live.zeropragasolutions.Dao.UsuarioDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
-import com.live.zeropragasolutions.MainActivity;
 import com.live.zeropragasolutions.Model.Praga;
+import com.live.zeropragasolutions.Model.Usuario;
 import com.live.zeropragasolutions.R;
-import com.live.zeropragasolutions.SplashScreen;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.Serializable;
 
-public class PragaNewActivity extends AppCompatActivity {
+public class UsuarioNewActivity extends AppCompatActivity {
 
     private FloatingActionButton btnSalvar;
     private FloatingActionButton btnSelecionarImagem;
     private FloatingActionButton btnExcluirImagem;
     private FloatingActionButton btnMenu;
-    private ImageView ImagemTirada;
+
     private EditText txtCodigo;
     private EditText txtNome;
-    private EditText txtDescricao;
-    private Bitmap img;
+    private EditText txtDataNascimento;
+    private EditText txtRG;
+    private EditText txtCPF;
+    private EditText txtLogin;
+    private EditText txtSenha;
+    private EditText txtEmail;
+    private RadioButton ckbTipoContaFiscal;
+    private RadioButton ckbTipoContaAdm;
+
     private int indiceMenu = 0;
 
-    private Praga praga;
+    private Usuario usuario;
+    private UsuarioDao contexto = AppDataBase.getInstance(this).getUsuarioDao();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_praga_new);
+        setContentView(R.layout.activity_usuario_new);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,14 +64,7 @@ public class PragaNewActivity extends AppCompatActivity {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SalvarPraga();
-            }
-        });
-
-        btnSelecionarImagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tirarFoto();
+                Salvar();
             }
         });
 
@@ -88,43 +83,74 @@ public class PragaNewActivity extends AppCompatActivity {
         btnSelecionarImagem = findViewById(R.id.btnSelecionarImagem);
         btnExcluirImagem = findViewById(R.id.btnRemoverImagem);
         btnMenu = findViewById(R.id.btnMenu);
-        ImagemTirada = (ImageView) findViewById(R.id.imgPraga);
         txtCodigo = findViewById(R.id.txtCodigo);
         txtNome = findViewById(R.id.txtNome);
-        txtDescricao = findViewById(R.id.txtDescricao);
+        txtDataNascimento = findViewById(R.id.txtDataNascimento);
+        txtRG = findViewById(R.id.txtRG);
+        txtCPF = findViewById(R.id.txtCPF);
+        txtLogin = findViewById(R.id.txtLogin);
+        txtSenha = findViewById(R.id.txtSenha);
+        txtEmail = findViewById(R.id.txtEmail);
+        ckbTipoContaFiscal = findViewById(R.id.ckbFiscal);
+        ckbTipoContaAdm = findViewById(R.id.ckbAdm);
     }
 
-    private void SalvarPraga() {
+    private void Salvar() {
 
         boolean resultado = false;
 
-        Praga minhaPraga;
+        Usuario meuUsuario;
 
         // Cria uma Nova Praga
-        if (praga == null) {
+        if (usuario == null) {
 
-            minhaPraga = new Praga();
-            minhaPraga.setNome(txtNome.getText().toString());
-            minhaPraga.setDescricao(txtDescricao.getText().toString());
-            minhaPraga.set_status(true);
+            meuUsuario = new Usuario();
 
-            long[] retorno = AppDataBase.getInstance(this).getPragaDao().insert(minhaPraga);
+            meuUsuario.setNome(txtNome.getText().toString());
+            meuUsuario.setNome(txtNome.getText().toString());
+            meuUsuario.setDataNascimento(txtDataNascimento.getText().toString());
+            meuUsuario.setRG(txtRG.getText().toString());
+            meuUsuario.setCPF(txtCPF.getText().toString());
+            meuUsuario.setLogin(txtLogin.getText().toString());
+            meuUsuario.setSenha(txtSenha.getText().toString());
+            meuUsuario.setEmail(txtEmail.getText().toString());
+
+            if(ckbTipoContaFiscal.isChecked())
+                meuUsuario.setTipoConta(0);
+
+            if(ckbTipoContaAdm.isChecked())
+                meuUsuario.setTipoConta(1);
+
+            meuUsuario.setStatus(true);
+
+            long[] retorno = contexto.insert(meuUsuario);
 
             // Verficica se Salvou de forma correta
             if (retorno.length > 0) {
                 resultado = true;
-                minhaPraga.setID((int) retorno[0]);
+                meuUsuario.setID((int) retorno[0]);
             }
 
         } else {
             // Atualizar uma Praga já existente
 
-            praga.setNome(txtNome.getText().toString());
-            praga.setDescricao(txtDescricao.getText().toString());
+            usuario.setNome(txtNome.getText().toString());
+            usuario.setDataNascimento(txtDataNascimento.getText().toString());
+            usuario.setRG(txtRG.getText().toString());
+            usuario.setCPF(txtCPF.getText().toString());
+            usuario.setLogin(txtLogin.getText().toString());
+            usuario.setSenha(txtSenha.getText().toString());
+            usuario.setEmail(txtEmail.getText().toString());
 
-            minhaPraga = praga;
+            if(ckbTipoContaFiscal.isChecked())
+                usuario.setTipoConta(0);
 
-            int retorno = AppDataBase.getInstance(this).getPragaDao().update(praga);
+            if(ckbTipoContaAdm.isChecked())
+                usuario.setTipoConta(1);
+
+            meuUsuario = usuario;
+
+            int retorno = contexto.update(usuario);
 
             // Verficica se Salvou de forma correta
             if (retorno > 0)
@@ -136,7 +162,7 @@ public class PragaNewActivity extends AppCompatActivity {
             Mensagens.mostraMensagem(this, R.string.SalvarSucesso);
 
             Intent data = new Intent();
-            data.putExtra(Praga.EXTRA_NAME, minhaPraga);
+            data.putExtra(Usuario.EXTRA_NAME, meuUsuario);
             //
             setResult(RESULT_OK, data);
 
@@ -149,13 +175,6 @@ public class PragaNewActivity extends AppCompatActivity {
 
     }
 
-    public void tirarFoto() {
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-
-        //espera o resultado
-        startActivityForResult(intent, 0);
-    }
-
     @SuppressLint("RestrictedApi")
     private void AbrirFecharMenu() {
         if (indiceMenu == 0) {
@@ -165,21 +184,21 @@ public class PragaNewActivity extends AppCompatActivity {
                 public void run() {
                     btnSalvar.setVisibility(View.VISIBLE);
                 }
-            }, 100);
+            }, 50);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnExcluirImagem.setVisibility(View.VISIBLE);
                 }
-            }, 300);
+            }, 100);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnSelecionarImagem.setVisibility(View.VISIBLE);
                 }
-            }, 500);
+            }, 150);
 
             indiceMenu = 1;
         } else {
@@ -188,30 +207,30 @@ public class PragaNewActivity extends AppCompatActivity {
                 public void run() {
                     btnSelecionarImagem.setVisibility(View.INVISIBLE);
                 }
-            }, 100);
+            }, 50);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnExcluirImagem.setVisibility(View.INVISIBLE);
                 }
-            }, 300);
+            }, 100);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnSalvar.setVisibility(View.INVISIBLE);
                 }
-            }, 500);
+            }, 150);
 
             indiceMenu = 0;
         }
     }
 
     private void carregaInformacoesPassadasPorParametro() {
-        Serializable objetoPassado = getIntent().getSerializableExtra(Praga.EXTRA_NAME);
+        Serializable objetoPassado = getIntent().getSerializableExtra(Usuario.EXTRA_NAME);
         if (objetoPassado != null) {
-            praga = (Praga) objetoPassado;
+            usuario = (Usuario) objetoPassado;
             carregaInformacoesParaAtualizacao();
         } else {
             buscaProximoCodigo();
@@ -222,51 +241,28 @@ public class PragaNewActivity extends AppCompatActivity {
 
         txtCodigo.setEnabled(false);
 
-        txtCodigo.setText(AppDataBase.getInstance(this).getPragaDao().getProximoCodigo().toString());
+        txtCodigo.setText(contexto.getProximoCodigo().toString());
     }
 
     private void carregaInformacoesParaAtualizacao() {
+
         txtCodigo.setEnabled(false);
-        txtCodigo.setText(praga.getID().toString());
-        txtNome.setText(praga.getNome());
-        txtDescricao.setText(praga.getDescricao());
+
+        txtCodigo.setText(usuario.getID().toString());
+        txtNome.setText(usuario.getNome().toString());
+        txtDataNascimento.setText(usuario.getDataNascimento().toString());
+        txtRG.setText(usuario.getRG().toString());
+        txtCPF.setText(usuario.getCPF().toString());
+        txtLogin.setText(usuario.getLogin().toString());
+        txtSenha.setText(usuario.getSenha().toString());
+        txtEmail.setText(usuario.getEmail().toString());
+        
+        if(usuario.getTipoConta() == 0 )
+            ckbTipoContaFiscal.setChecked(true);
+
+        if(usuario.getTipoConta() == 1 )
+            ckbTipoContaAdm.setChecked(true);
+
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                img = (Bitmap) bundle.get("data");
-
-                ImagemTirada.setImageBitmap(img);
-
-                //chgama o metodo e pega o URI da imagem
-                Uri uri = (Uri) getImageUri(getApplicationContext(), img);
-
-                //chama o metodo e pega o URI da imagem
-                File file = new File(geRealPath(uri));
-
-                Toast.makeText(this, "CAMINHO: " + file.getPath(), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private String geRealPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
-
-    private Uri getImageUri(Context context, Bitmap img) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), img, "Title", null);
-        return Uri.parse(path);
-    }
-
-
 
 }

@@ -14,9 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activity.UsuarioNewActivity"
+            android:label="@string/title_activity_usuario_new"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.UsuarioActivity"
+            android:label="@string/title_activity_usuario"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Activity.TipoColetaNewActivity"
             android:label="@string/title_activity_tipo_coleta_new"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.TipoColetaActivity"
             android:label="@string/title_activity_tipo_coleta"
