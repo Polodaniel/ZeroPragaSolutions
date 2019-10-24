@@ -38,5 +38,6 @@
     <string name="title_activity_usuario_new">Novo Usuário</string>
     <string name="LoginErro">Login ou Senha Invalido !</string>
     <string name="menu_usuario">Usuário</string>
+    <string name="ContaInativa">Conta esta Inativada !</string>
 
 </resources>
