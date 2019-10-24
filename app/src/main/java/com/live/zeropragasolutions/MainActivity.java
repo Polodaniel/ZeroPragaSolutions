@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 retornoLogin = contexto.buscaUsuario(user,psd);
 
+                if(retornoLogin.getStatus() == "Inativo") {
+                    Mensagens.mostraMensagem(this, R.string.ContaInativa);
+
+                    break;
+                }
+
                 if(retornoLogin != null)
                     AbreTelaPrincipal();
                 else

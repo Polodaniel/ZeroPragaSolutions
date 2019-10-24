@@ -25,7 +25,10 @@ public interface UsuarioDao {
     @Query("SELECT IFNULL(MAX(ID),0)+1 FROM Usuario")
     public Integer getProximoCodigo();
 
-    @Query("SELECT * FROM Usuario WHERE Login = :user AND Senha = :psd ")
+    @Query("SELECT * FROM Usuario WHERE Login = :user AND Senha = :psd")
     public Usuario buscaUsuario(String user ,String psd);
+
+    @Query("UPDATE Usuario set Status = 'true' WHERE ID = :codUser ")
+    public int Desativar(Integer codUser );
 
 }

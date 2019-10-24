@@ -137,8 +137,26 @@ public class UsuarioActivity extends AppCompatActivity {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listaUsuario.remove(position);
-                    notifyItemRemoved(position);
+
+                    Usuario user = new Usuario();
+
+                    //listaUsuario.remove(position);
+
+                    for(Usuario item : listaUsuario )
+                    {
+                        if(item.getID() == (position+1))
+                        {
+                            user.setStatus(true);
+                            user = item;
+                        }
+                    }
+
+                    int retorno = contexto.Desativar(user.getID());
+
+                    //notifyItemChanged(position);
+                    rvInformacoes.getAdapter().notifyItemChanged(position);
+
+                    //notifyItemRemoved(position);
                     return true;
                 }
 

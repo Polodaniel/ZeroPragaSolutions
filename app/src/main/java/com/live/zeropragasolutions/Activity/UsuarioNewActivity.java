@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -75,6 +76,31 @@ public class UsuarioNewActivity extends AppCompatActivity {
             }
         });
 
+        ckbTipoContaFiscal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBoxFiscal();
+            }
+
+            private void CheckBoxFiscal() {
+
+                if (ckbTipoContaFiscal.isChecked())
+                    ckbTipoContaAdm.setChecked(false);
+            }
+        });
+
+        ckbTipoContaAdm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBoxAdm();
+            }
+
+            private void CheckBoxAdm() {
+                if (ckbTipoContaAdm.isChecked())
+                    ckbTipoContaFiscal.setChecked(false);
+            }
+        });
+
         carregaInformacoesPassadasPorParametro();
     }
 
@@ -115,21 +141,26 @@ public class UsuarioNewActivity extends AppCompatActivity {
             meuUsuario.setSenha(txtSenha.getText().toString());
             meuUsuario.setEmail(txtEmail.getText().toString());
 
-            if(ckbTipoContaFiscal.isChecked())
+            if (ckbTipoContaFiscal.isChecked())
                 meuUsuario.setTipoConta(0);
 
-            if(ckbTipoContaAdm.isChecked())
+            if (ckbTipoContaAdm.isChecked())
                 meuUsuario.setTipoConta(1);
 
             meuUsuario.setStatus(true);
 
-            long[] retorno = contexto.insert(meuUsuario);
+            if (ValidaCampos(meuUsuario)) {
+                long[] retorno = contexto.insert(meuUsuario);
 
-            // Verficica se Salvou de forma correta
-            if (retorno.length > 0) {
-                resultado = true;
-                meuUsuario.setID((int) retorno[0]);
+                // Verficica se Salvou de forma correta
+                if (retorno.length > 0) {
+                    resultado = true;
+                    meuUsuario.setID((int) retorno[0]);
+                }
+            } else {
+                resultado = false;
             }
+
 
         } else {
             // Atualizar uma Praga já existente
@@ -142,10 +173,10 @@ public class UsuarioNewActivity extends AppCompatActivity {
             usuario.setSenha(txtSenha.getText().toString());
             usuario.setEmail(txtEmail.getText().toString());
 
-            if(ckbTipoContaFiscal.isChecked())
+            if (ckbTipoContaFiscal.isChecked())
                 usuario.setTipoConta(0);
 
-            if(ckbTipoContaAdm.isChecked())
+            if (ckbTipoContaAdm.isChecked())
                 usuario.setTipoConta(1);
 
             meuUsuario = usuario;
@@ -167,12 +198,34 @@ public class UsuarioNewActivity extends AppCompatActivity {
             setResult(RESULT_OK, data);
 
             this.finish();
-        }
-        else
-        {
+        } else {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
         }
 
+    }
+
+    private boolean ValidaCampos(Usuario user) {
+
+        boolean retorno = true;
+
+        Integer Zero = 0;
+        Integer Um = 1;
+        Integer TipoConta = user.getTipoConta().intValue();
+
+        if (user.getNome().isEmpty())
+            return false;
+        else if (user.getLogin().isEmpty())
+            return false;
+        else if (user.getSenha().isEmpty())
+            return false;
+        else if (user.getDataNascimento().isEmpty())
+            return false;
+        else if (user.getEmail().isEmpty())
+            return false;
+        else if (TipoConta != Zero && TipoConta != Um)
+            return false;
+
+        return retorno;
     }
 
     @SuppressLint("RestrictedApi")
@@ -256,11 +309,11 @@ public class UsuarioNewActivity extends AppCompatActivity {
         txtLogin.setText(usuario.getLogin().toString());
         txtSenha.setText(usuario.getSenha().toString());
         txtEmail.setText(usuario.getEmail().toString());
-        
-        if(usuario.getTipoConta() == 0 )
+
+        if (usuario.getTipoConta() == 0)
             ckbTipoContaFiscal.setChecked(true);
 
-        if(usuario.getTipoConta() == 1 )
+        if (usuario.getTipoConta() == 1)
             ckbTipoContaAdm.setChecked(true);
 
     }
