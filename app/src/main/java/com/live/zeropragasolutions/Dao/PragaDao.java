@@ -19,10 +19,13 @@ public interface PragaDao {
     @Update
     public int update(Praga... values);
 
-    @Query("SELECT * FROM Praga")
+    @Query("SELECT * FROM Praga ORDER BY ID")
     public List<Praga> listaPragas();
 
     @Query("SELECT IFNULL(MAX(id),0)+1 FROM Praga")
     public Integer getProximoCodigo();
+
+    @Query("UPDATE Praga set _status = 'true' WHERE ID = :codPraga ")
+    public int Desativar(Integer codPraga );
 
 }

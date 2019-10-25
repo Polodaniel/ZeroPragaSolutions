@@ -119,7 +119,9 @@ public class UsuarioActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull UsuarioActivity.MeuHolder holder, final int position) {
+
             final Usuario user = listaUsuario.get(position);
+
             holder.tvNome.setText(user.getNome().toString());
             holder.tvCodigo.setText(user.getID().toString());
             holder.tvStatus.setText(user.getStatus().toString());
@@ -153,8 +155,15 @@ public class UsuarioActivity extends AppCompatActivity {
 
                     int retorno = contexto.Desativar(user.getID());
 
-                    //notifyItemChanged(position);
-                    rvInformacoes.getAdapter().notifyItemChanged(position);
+                    listaUsuario = contexto.listaUsuarios();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvInformacoes.getAdapter().notifyDataSetChanged();
+                        }
+                    }, 1000);
+
 
                     //notifyItemRemoved(position);
                     return true;
