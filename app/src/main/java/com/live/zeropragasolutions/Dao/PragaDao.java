@@ -7,7 +7,6 @@ import androidx.room.Update;
 
 import com.live.zeropragasolutions.Model.Praga;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
