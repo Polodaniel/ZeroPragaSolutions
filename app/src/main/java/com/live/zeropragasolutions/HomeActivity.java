@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity
 
         String dataAtual = formataData.format(data);
 
-        lblMensagemHome.setText("Seja Bem Vindo " + meuCadastro.getNome() +" hoje é dia " + dataAtual + " .");
+        lblMensagemHome.setText("Seja Bem Vindo " + meuCadastro.getNome()+ " .");
     }
 
     @Override

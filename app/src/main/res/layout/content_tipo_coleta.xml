@@ -8,13 +8,12 @@
     tools:context=".Activity.TipoColetaActivity"
     tools:showIn="@layout/activity_tipo_coleta">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:id="@+id/rvInformacoesColeta"
+        tools:listitem="@layout/item_cadastro_tipo_coleta"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="match_parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

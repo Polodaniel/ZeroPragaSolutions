@@ -18,8 +18,10 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.live.zeropragasolutions.Dao.PragaDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.Praga;
+import com.live.zeropragasolutions.Model.Usuario;
 import com.live.zeropragasolutions.R;
 
 import java.io.Serializable;
@@ -35,6 +37,8 @@ public class PragaActivity extends AppCompatActivity {
     private RecyclerView rvInformacoes;
     //
     private List<Praga> listaPragas = new ArrayList<>();
+
+    PragaDao contexto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class PragaActivity extends AppCompatActivity {
     }
 
     private void carregaInformacoes() {
-        listaPragas = AppDataBase.getInstance(this).getPragaDao().listaPragas();
+        listaPragas = contexto.listaPragas();
     }
 
     private void AbreTelaPragaNew()
@@ -70,6 +74,7 @@ public class PragaActivity extends AppCompatActivity {
     }
 
     private void inicializaComponentes() {
+        contexto = AppDataBase.getInstance(this).getPragaDao();
         rvInformacoes = findViewById(R.id.rvInformacoes);
     }
 
@@ -123,8 +128,23 @@ public class PragaActivity extends AppCompatActivity {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listaPragas.remove(position);
-                    notifyItemRemoved(position);
+
+                    Praga pragas = new Praga();
+
+                    for(Praga item : listaPragas )
+                    {
+                        if(item.getID() == (position+1))
+                        {
+                            pragas.set_status(true);
+                            pragas = item;
+                        }
+                    }
+
+                    int retorno = contexto.Desativar(pragas.getID());
+
+                    listaPragas = contexto.listaPragas();
+
+                    rvInformacoes.getAdapter().notifyDataSetChanged();
                     return true;
                 }
 

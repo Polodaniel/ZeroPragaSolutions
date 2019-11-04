@@ -172,6 +172,7 @@ public class UsuarioNewActivity extends AppCompatActivity {
             usuario.setLogin(txtLogin.getText().toString());
             usuario.setSenha(txtSenha.getText().toString());
             usuario.setEmail(txtEmail.getText().toString());
+            usuario.setStatus(true);
 
             if (ckbTipoContaFiscal.isChecked())
                 usuario.setTipoConta(0);
@@ -181,11 +182,13 @@ public class UsuarioNewActivity extends AppCompatActivity {
 
             meuUsuario = usuario;
 
-            int retorno = contexto.update(usuario);
+            if (ValidaCampos(meuUsuario)) {
+                int retorno = contexto.update(usuario);
 
-            // Verficica se Salvou de forma correta
-            if (retorno > 0)
-                resultado = true;
+                // Verficica se Salvou de forma correta
+                if (retorno > 0)
+                    resultado = true;
+            }
         }
 
 

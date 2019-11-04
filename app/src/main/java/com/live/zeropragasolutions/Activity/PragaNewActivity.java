@@ -121,6 +121,7 @@ public class PragaNewActivity extends AppCompatActivity {
 
             praga.setNome(txtNome.getText().toString());
             praga.setDescricao(txtDescricao.getText().toString());
+            praga.set_status(true);
 
             minhaPraga = praga;
 
