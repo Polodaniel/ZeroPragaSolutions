@@ -61,8 +61,6 @@ public class UsuarioActivity extends AppCompatActivity {
         carregaInformacoes();
 
         inicializaAdapter();
-
-
     }
 
     private void carregaInformacoes() {
