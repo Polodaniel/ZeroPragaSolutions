@@ -122,7 +122,7 @@ public class TipoColetaActivity extends AppCompatActivity {
             holder.tvNome.setText(tp.getNome().toString());
             holder.tvCodigo.setText(tp.getId().toString());
             holder.tvStatus.setText(tp.getStatus().toString());
-            holder.tvPraga.setText(tp.getStatus().toString());
+            holder.tvPraga.setText(tp.getNomePraga().toString());
 
             if (tp.getStatus().toString() == "Ativo")
                 holder.tvStatus.setTextColor(Color.GREEN);

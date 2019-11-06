@@ -61,7 +61,7 @@ public class TurmaActivity extends AppCompatActivity {
     private void AbreTelaTurmaNew()
     {
         Intent telaTurmaNew = new Intent(this, TurmaNewActivity.class);
-        startActivity(telaTurmaNew);
+        startActivityForResult(telaTurmaNew,REQUEST_CADASTRO_TURMA);
     }
 
     private void inicializaComponentes() {

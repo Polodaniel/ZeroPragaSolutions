@@ -64,7 +64,7 @@ public class EstagioActivity extends AppCompatActivity {
     private void AbreTelaEstagioNew()
     {
         Intent telaEstagioNew = new Intent(this, EstagioNewActivity.class);
-        startActivity(telaEstagioNew);
+        startActivityForResult(telaEstagioNew, REQUEST_CADASTRO_ESTAGIO);
     }
 
     private void inicializaAdapter()

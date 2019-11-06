@@ -23,7 +23,25 @@ public class TipoColeta implements Serializable {
     private String Descricao;
 
     @ColumnInfo
-    private Long idPraga;
+    private Integer idPraga;
+
+    public String getNomePraga() {
+        return NomePraga;
+    }
+
+    public void setNomePraga(String nomePraga) {
+        NomePraga = nomePraga;
+    }
+
+    private String NomePraga;
+
+    public Integer getIdPraga() {
+        return idPraga;
+    }
+
+    public void setIdPraga(Integer idPraga) {
+        this.idPraga = idPraga;
+    }
 
     @ColumnInfo
     private boolean Status;
@@ -58,14 +76,6 @@ public class TipoColeta implements Serializable {
 
     public void setDescricao(String descricao) {
         Descricao = descricao;
-    }
-
-    public Long getIdPraga() {
-        return idPraga;
-    }
-
-    public void setIdPraga(Long idPraga) {
-        this.idPraga = idPraga;
     }
 
     public TipoColeta() {

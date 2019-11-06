@@ -10,31 +10,162 @@
     tools:context=".HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:id="@+id/barraTotalizador"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/ic_topo_card_home"
+            android:padding="10dp"
+            android:text="Totalizadores"
+            android:textColor="#FFFF" />
+
+        <ImageButton
+            android:id="@+id/btnAtualizarTotalizador"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="3"
+            android:background="@drawable/ic_botao_atualizar"
+            android:textColor="#FFF"
+            app:srcCompat="@android:drawable/ic_popup_sync" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTotalizador"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="0dp"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingTop="20dp"
-            android:paddingRight="10dp"
-            android:background="@drawable/selector"
-            android:paddingBottom="20dp">
+            android:padding="10dp">
 
-            <TextView
-                android:id="@+id/lblMensagemHome"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_horizontal"
-                android:text="#Texto_Home#"
-                android:textColor="#000000"
-                android:textSize="18dp" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Qtde. Boletins: "
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/lblQtdeBoletins"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="#000" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Qtde. Pragas: "
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/lblQtdePraga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="#000" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Qtde. Estágios: "
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/lblQtdeEstagio"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="#000" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Qtde. Tipo Coleta: "
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/lblQtdeTipoColeta"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="#000" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Qtde. Turmas: "
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/lblQtdeTurma"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="#000" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -43,10 +174,54 @@
         android:layout_width="match_parent"
         android:layout_height="20dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/ic_topo_card_home"
+            android:padding="10dp"
+            android:text="Boletins Lançados"
+            android:textColor="#FFFF" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_top_card_reto"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="Total:"
+            android:textColor="#FFFF"/>
+
+        <TextView
+            android:id="@+id/lblTotalBoletins"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_topo_card_esq"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="0"
+            android:textColor="#FFFF"/>
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        // Aqui vem os Cards dos boletins
 
     </ScrollView>
 
