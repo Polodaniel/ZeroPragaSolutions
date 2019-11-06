@@ -9,6 +9,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -20,7 +22,11 @@ import com.live.zeropragasolutions.Activity.PragaActivity;
 import com.live.zeropragasolutions.Activity.TipoColetaActivity;
 import com.live.zeropragasolutions.Activity.TurmaActivity;
 import com.live.zeropragasolutions.Activity.UsuarioActivity;
+import com.live.zeropragasolutions.Dao.HomeDao;
+import com.live.zeropragasolutions.Dao.UsuarioDao;
+import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
+import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.Model.Usuario;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,7 +35,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.sql.Time;
@@ -39,6 +48,8 @@ import java.util.Date;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int REQUEST_HOME = 1;
+
     // Variaveis
     Usuario meuCadastro = new Usuario();
 
@@ -46,7 +57,19 @@ public class HomeActivity extends AppCompatActivity
     private  NavigationView navigationView;
     private FloatingActionButton btnNovo;
 
-    private TextView lblMensagemHome;
+    private TextView lblQtdeBoletins;
+    private TextView lblTotalBoletins;
+    private TextView lblQtdePragas;
+    private TextView lblQtdeEstagio;
+    private TextView lblQtdeTipoColeta;
+    private TextView lblQtdeTurma;
+
+    private ImageButton btnAtualizarTotalizador;
+
+    private LinearLayout barraTotalizador;
+    private CardView cardTotalizador;
+
+    private HomeDao contexto = AppDataBase.getInstance(this).getHomeDao();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +102,17 @@ public class HomeActivity extends AppCompatActivity
         // Monta Menu User / Admin
         montaMenuUserAdmin();
 
-        montaMensagemBoasVindas();
+        // Monta o Totalizador
+        montaListaContadores();
 
-    }
+        btnAtualizarTotalizador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                montaListaContadores();
+            }
+        });
 
-    private void montaMensagemBoasVindas() {
 
-        SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy");
-
-        Date data = new Date();
-
-        String dataAtual = formataData.format(data);
-
-        lblMensagemHome.setText("Seja Bem Vindo " + meuCadastro.getNome()+ " .");
     }
 
     @Override
@@ -158,7 +179,32 @@ public class HomeActivity extends AppCompatActivity
 
     private void inicializaComponenetes() {
         btnNovo = (FloatingActionButton) findViewById(R.id.fab);
-        lblMensagemHome = findViewById(R.id.lblMensagemHome);
+        lblQtdeBoletins = findViewById(R.id.lblQtdeBoletins);
+        lblTotalBoletins = findViewById(R.id.lblTotalBoletins);
+        lblQtdePragas = findViewById(R.id.lblQtdePraga);
+        lblQtdeEstagio = findViewById(R.id.lblQtdeEstagio);
+        lblQtdeTipoColeta = findViewById(R.id.lblQtdeTipoColeta);
+        lblQtdeTurma = findViewById(R.id.lblQtdeTurma);
+
+        btnAtualizarTotalizador = findViewById(R.id.btnAtualizarTotalizador);
+
+        barraTotalizador = findViewById(R.id.barraTotalizador);
+        cardTotalizador = findViewById(R.id.cardTotalizador);
+    }
+
+    private void montaListaContadores()
+    {
+        lblQtdeBoletins.setText("0");
+        lblQtdePragas.setText(contexto.getContaTodasPrgas().toString());
+        lblQtdeEstagio.setText(contexto.getContaTodosEstagio().toString());
+        lblQtdeTipoColeta.setText(contexto.getContaTodosTipoColeta().toString());
+        lblQtdeTurma.setText(contexto.getContaTodasTurmas().toString());
+
+        if(meuCadastro.getTipoConta() == 0) {
+            lblTotalBoletins.setText("0");
+        }else if(meuCadastro.getTipoConta() == 1){
+            lblTotalBoletins.setText("10");
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -167,9 +213,13 @@ public class HomeActivity extends AppCompatActivity
 
             if (meuCadastro.getTipoConta() == 0) {
                 navigationView.getMenu().findItem(R.id.nav_descricao).setVisible(false);
+                barraTotalizador.setVisibility(View.VISIBLE);
+                cardTotalizador.setVisibility(View.VISIBLE);
             } else if (meuCadastro.getTipoConta() == 1) {
                 navigationView.getMenu().findItem(R.id.nav_descricao).setVisible(true);
                 btnNovo.setVisibility(View.INVISIBLE);
+                barraTotalizador.setVisibility(View.VISIBLE);
+                cardTotalizador.setVisibility(View.VISIBLE);
             }
 
         } catch (Exception ex) {
@@ -206,4 +256,5 @@ public class HomeActivity extends AppCompatActivity
         Intent telaUsuario = new Intent(this, UsuarioActivity.class);
         startActivity(telaUsuario);
     }
+
 }

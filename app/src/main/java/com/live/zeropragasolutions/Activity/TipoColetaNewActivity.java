@@ -102,7 +102,16 @@ public class TipoColetaNewActivity extends AppCompatActivity {
             meuTipoColeta = new TipoColeta();
 
             meuTipoColeta.setNome(txtNome.getText().toString());
+
             meuTipoColeta.setDescricao(txtDescricao.getText().toString());
+
+            String PragaSelecionada = spinnerPraga.getSelectedItem().toString();
+
+            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0,6));
+
+            meuTipoColeta.setIdPraga(CodigoPragaInt);
+
+            meuTipoColeta.setNomePraga(PragaSelecionada.substring(9));
 
             meuTipoColeta.setStatus(true);
 
@@ -125,6 +134,14 @@ public class TipoColetaNewActivity extends AppCompatActivity {
             tipoColeta.setNome(txtNome.getText().toString());
             tipoColeta.setDescricao(txtDescricao.getText().toString());
             tipoColeta.setStatus(true);
+
+            String PragaSelecionada = spinnerPraga.getSelectedItem().toString();
+
+            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0,6));
+
+            tipoColeta.setIdPraga(CodigoPragaInt);
+
+            tipoColeta.setNomePraga(PragaSelecionada.substring(9));
 
             meuTipoColeta = tipoColeta;
 
@@ -155,14 +172,16 @@ public class TipoColetaNewActivity extends AppCompatActivity {
 
     private boolean ValidaCampos(TipoColeta tipoColeta) {
 
-        boolean retorno = true;
-
         if (tipoColeta.getNome().isEmpty())
             return false;
         else if (tipoColeta.getDescricao().isEmpty())
             return false;
+        else if(tipoColeta.getIdPraga().toString().isEmpty())
+            return false;
+        else if(tipoColeta.getNomePraga().isEmpty())
+            return false;
 
-        return retorno;
+        return true;
     }
 
     @SuppressLint("RestrictedApi")
