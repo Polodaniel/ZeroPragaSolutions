@@ -14,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activity.BoletimNewActivity"
+            android:label="@string/title_activity_boletim_new"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Activity.UsuarioNewActivity"
             android:label="@string/title_activity_usuario_new"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.UsuarioActivity"
             android:label="@string/title_activity_usuario"
