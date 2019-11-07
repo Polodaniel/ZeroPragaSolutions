@@ -23,12 +23,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imgPraga"
-                    android:layout_width="100dp"
-                    android:layout_height="150dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
                     android:layout_gravity="center"
                     android:clickable="false"
                     android:layout_weight="1"
@@ -36,6 +37,7 @@
                     android:foreground="@mipmap/item_sem_imagem"
                     android:soundEffectsEnabled="false"
                     android:src="@mipmap/item_sem_imagem"
+                    android:scaleType="fitXY"
                     tools:layout_editor_absoluteX="67dp"
                     tools:layout_editor_absoluteY="469dp" />
 
