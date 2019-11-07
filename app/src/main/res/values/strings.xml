@@ -39,6 +39,6 @@
     <string name="LoginErro">Login ou Senha Invalido !</string>
     <string name="menu_usuario">Usuário</string>
     <string name="ContaInativa">Conta esta Inativada !</string>
-    <string name="title_activity_boletim_new">BoletimNewActivity</string>
+    <string name="title_activity_boletim_new">Novo Boletim</string>
 
 </resources>
