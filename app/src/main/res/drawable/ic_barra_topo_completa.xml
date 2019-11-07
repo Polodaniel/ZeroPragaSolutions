@@ -2,12 +2,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#E4415E31"/>
-            <corners android:topLeftRadius="0dp"
-                android:topRightRadius="0dp"
+            <solid android:color="#FF0D3806"/>
+            <corners android:topLeftRadius="8dp"
+                android:topRightRadius="8dp"
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"/>
-            <stroke android:color="#E4415E31" android:width="0dp"/> <!-- cor da borda e tamanho dela -->
+            <stroke android:color="#FF0D3806" android:width="0dp"/> <!-- cor da borda e tamanho dela -->
             <padding android:bottom="8dp" android:left="8dp" android:right="8dp" android:top="8dp"/>
         </shape>
     </item>

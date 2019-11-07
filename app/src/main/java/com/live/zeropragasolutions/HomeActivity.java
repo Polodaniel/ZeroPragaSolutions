@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.live.zeropragasolutions.Activity.BoletimNewActivity;
 import com.live.zeropragasolutions.Activity.EstagioActivity;
 import com.live.zeropragasolutions.Activity.PragaActivity;
 import com.live.zeropragasolutions.Activity.TipoColetaActivity;
@@ -78,13 +79,6 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,6 +98,13 @@ public class HomeActivity extends AppCompatActivity
 
         // Monta o Totalizador
         montaListaContadores();
+
+        btnNovo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AbreTelaBoletimNovo();
+            }
+        });
 
         btnAtualizarTotalizador.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,6 +256,12 @@ public class HomeActivity extends AppCompatActivity
     {
         Intent telaUsuario = new Intent(this, UsuarioActivity.class);
         startActivity(telaUsuario);
+    }
+
+    private void AbreTelaBoletimNovo()
+    {
+        Intent telaBoletimNovo = new Intent(this, BoletimNewActivity.class);
+        startActivity(telaBoletimNovo);
     }
 
 }
