@@ -11,41 +11,52 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:ignore="MissingConstraints">
+        tools:layout_editor_absoluteY="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"></LinearLayout>
 
                 <ImageView
                     android:id="@+id/imgPraga"
-                    android:layout_width="100dp"
-                    android:layout_height="150dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_gravity="center"
+                    android:layout_weight="0.5"
                     android:clickable="false"
-                    android:layout_weight="1"
                     android:duplicateParentState="false"
                     android:foreground="@mipmap/item_sem_imagem"
+                    android:foregroundGravity="fill"
+                    android:scaleType="fitXY"
                     android:soundEffectsEnabled="false"
-                    android:src="@mipmap/item_sem_imagem"
-                    tools:layout_editor_absoluteX="67dp"
-                    tools:layout_editor_absoluteY="469dp" />
+                    android:src="@mipmap/item_sem_imagem" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"></LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <Space
                     android:layout_width="match_parent"
@@ -59,8 +70,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/lblNomePraga"
@@ -91,7 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="10dp" >
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/lblNome"
@@ -122,8 +133,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/lblDataNascimento"
@@ -144,9 +155,7 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="20dp" />
-
-        </LinearLayout>
-
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

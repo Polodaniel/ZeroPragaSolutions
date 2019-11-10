@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FF0D3806"/>
+            <corners android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"
+                android:bottomLeftRadius="8dp"
+                android:bottomRightRadius="8dp"/>
+            <stroke android:color="#FF0D3806" android:width="0dp"/> <!-- cor da borda e tamanho dela -->
+            <padding android:bottom="8dp" android:left="8dp" android:right="8dp" android:top="8dp"/>
+        </shape>
+    </item>
+</selector>

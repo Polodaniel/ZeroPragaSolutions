@@ -19,7 +19,7 @@ public interface UsuarioDao {
     @Update
     public int update(Usuario... values);
 
-    @Query("SELECT * FROM Usuario")
+    @Query("SELECT * FROM Usuario ORDER BY ID")
     public List<Usuario> listaUsuarios();
 
     @Query("SELECT IFNULL(MAX(ID),0)+1 FROM Usuario")

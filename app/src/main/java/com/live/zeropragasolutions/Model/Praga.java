@@ -34,6 +34,9 @@ public class Praga implements Serializable
     @ColumnInfo
     private boolean _status;
 
+    @ColumnInfo
+    private byte[] fotoPraga;
+
 
     public Integer getID() {
         return ID;
@@ -74,5 +77,13 @@ public class Praga implements Serializable
 
     public void set_status(boolean _status) {
         this._status = _status;
+    }
+
+    public byte[] getFotoPraga() {
+        return fotoPraga;
+    }
+
+    public void setFotoPraga(byte[] fotoPraga) {
+        this.fotoPraga = fotoPraga;
     }
 }

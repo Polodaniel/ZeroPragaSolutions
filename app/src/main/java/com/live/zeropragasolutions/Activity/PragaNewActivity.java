@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -33,6 +34,8 @@ import com.live.zeropragasolutions.SplashScreen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 
 public class PragaNewActivity extends AppCompatActivity {
@@ -108,6 +111,15 @@ public class PragaNewActivity extends AppCompatActivity {
             minhaPraga.setDescricao(txtDescricao.getText().toString());
             minhaPraga.set_status(true);
 
+            if (img != null) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                img.recycle();
+
+                minhaPraga.setFotoPraga(byteArray);
+            }
+
             long[] retorno = AppDataBase.getInstance(this).getPragaDao().insert(minhaPraga);
 
             // Verficica se Salvou de forma correta
@@ -121,6 +133,18 @@ public class PragaNewActivity extends AppCompatActivity {
 
             praga.setNome(txtNome.getText().toString());
             praga.setDescricao(txtDescricao.getText().toString());
+            praga.set_status(true);
+
+            // Atualiza Foto da Praga
+            if (img != null) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                img.recycle();
+
+                praga.setFotoPraga(byteArray);
+            }
+            //
 
             minhaPraga = praga;
 
@@ -141,9 +165,7 @@ public class PragaNewActivity extends AppCompatActivity {
             setResult(RESULT_OK, data);
 
             this.finish();
-        }
-        else
-        {
+        } else {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
         }
 
@@ -230,6 +252,13 @@ public class PragaNewActivity extends AppCompatActivity {
         txtCodigo.setText(praga.getID().toString());
         txtNome.setText(praga.getNome());
         txtDescricao.setText(praga.getDescricao());
+
+        if (praga.getFotoPraga() != null) {
+            Bitmap imagem = BitmapFactory.decodeByteArray(praga.getFotoPraga(), 0, praga.getFotoPraga().length);
+            ImagemTirada.setImageBitmap(imagem);
+        }
+
+
     }
 
     @Override
@@ -266,7 +295,6 @@ public class PragaNewActivity extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), img, "Title", null);
         return Uri.parse(path);
     }
-
 
 
 }
