@@ -116,7 +116,8 @@ public class EstagioActivity extends AppCompatActivity {
             holder.tvCodigo.setText(estagio.getID().toString());
             holder.tvStatus.setText(estagio.getStatus().toString());
             Praga praga = mDB.getPragaDao().ObterPorId(estagio.getPragaId());
-            holder.tvPraga.setText(praga.getNome());
+            if(holder.tvPraga != null)
+                holder.tvPraga.setText(praga.getNome());
 
             if(estagio.getStatus().toString() == "Ativo")
                 holder.tvStatus.setTextColor(Color.GREEN);
