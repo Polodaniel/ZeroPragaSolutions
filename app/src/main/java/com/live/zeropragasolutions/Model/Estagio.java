@@ -32,6 +32,9 @@ public class Estagio implements Serializable
     public String Descricao;
 
     @ColumnInfo
+    public Integer PragaId;
+
+    @ColumnInfo
     private boolean _status;
 
 
@@ -58,6 +61,10 @@ public class Estagio implements Serializable
     public void setDescricao(String descricao) {
         Descricao = descricao;
     }
+
+    public Integer getPragaId() { return PragaId; }
+
+    public void setPragaId(Integer pragaId){ PragaId = pragaId; }
 
     public String getStatus(){
 

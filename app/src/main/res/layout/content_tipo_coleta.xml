@@ -15,5 +15,4 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="match_parent" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

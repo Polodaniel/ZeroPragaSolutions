@@ -19,23 +19,31 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.live.zeropragasolutions.Auxiliares.Mensagens;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.MainActivity;
 import com.live.zeropragasolutions.Model.Estagio;
+import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.R;
 import com.live.zeropragasolutions.SplashScreen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EstagioNewActivity extends AppCompatActivity {
+public class EstagioNewActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private List<Praga> listaPragas;
 
     private FloatingActionButton btnSalvar;
     private FloatingActionButton btnSelecionarImagem;
@@ -45,10 +53,12 @@ public class EstagioNewActivity extends AppCompatActivity {
     private EditText txtCodigo;
     private EditText txtNome;
     private EditText txtDescricao;
+    private Spinner spPragas;
     private Bitmap img;
     private int indiceMenu = 0;
 
     private Estagio estagio;
+    private Praga pragaSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,8 @@ public class EstagioNewActivity extends AppCompatActivity {
         });
 
         carregaInformacoesPassadasPorParametro();
+
+        carregaInformacoes();
     }
 
     private void InicializaComponentes() {
@@ -92,6 +104,7 @@ public class EstagioNewActivity extends AppCompatActivity {
         txtCodigo = findViewById(R.id.txtCodigo);
         txtNome = findViewById(R.id.txtNome);
         txtDescricao = findViewById(R.id.txtDescricao);
+        spPragas = findViewById(R.id.spPragas);
     }
 
     private void SalvarEstagio() {
@@ -106,6 +119,7 @@ public class EstagioNewActivity extends AppCompatActivity {
             meuEstagio = new Estagio();
             meuEstagio.setNome(txtNome.getText().toString());
             meuEstagio.setDescricao(txtDescricao.getText().toString());
+            meuEstagio.setPragaId(pragaSelecionada.ID);
             meuEstagio.set_status(true);
 
             long[] retorno = AppDataBase.getInstance(this).getEstagioDao().insert(meuEstagio);
@@ -121,6 +135,7 @@ public class EstagioNewActivity extends AppCompatActivity {
 
             estagio.setNome(txtNome.getText().toString());
             estagio.setDescricao(txtDescricao.getText().toString());
+            estagio.setPragaId(pragaSelecionada.ID);
 
             meuEstagio = estagio;
 
@@ -218,6 +233,18 @@ public class EstagioNewActivity extends AppCompatActivity {
         }
     }
 
+    private void carregaInformacoes() {
+        listaPragas = AppDataBase.getInstance(this).getPragaDao().listaPragas();
+        List<String> opcoes = new ArrayList<String>();
+        for (Praga praga: listaPragas){
+            opcoes.add(praga.Nome);
+        }
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opcoes);
+        adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPragas.setOnItemSelectedListener(this);
+        spPragas.setAdapter(adaptador);
+    }
+
     private void buscaProximoCodigo() {
 
         txtCodigo.setEnabled(false);
@@ -265,5 +292,16 @@ public class EstagioNewActivity extends AppCompatActivity {
         img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), img, "Title", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        pragaSelecionada = listaPragas.get(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        if (listaPragas.size() > 0)
+            pragaSelecionada = listaPragas.get(0);
     }
 }
