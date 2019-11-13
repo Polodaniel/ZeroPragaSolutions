@@ -27,4 +27,7 @@ public interface PragaDao {
     @Query("UPDATE Praga set _status = 'true' WHERE ID = :codPraga ")
     public int Desativar(Integer codPraga );
 
+    @Query("SELECT * FROM Praga WHERE ID = :codPraga ")
+    public Praga ObterPorId(Integer codPraga );
+
 }

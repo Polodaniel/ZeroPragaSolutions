@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.Estagio;
+import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.R;
 
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class EstagioActivity extends AppCompatActivity {
     private FloatingActionButton btAdicionar;
     private RecyclerView rvInformacoes;
     //
+    private AppDataBase mDB;
     private List<Estagio> listaEstagios = new ArrayList<>();
 
     @Override
@@ -58,7 +60,8 @@ public class EstagioActivity extends AppCompatActivity {
     }
 
     private void carregaInformacoes() {
-        listaEstagios = AppDataBase.getInstance(this).getEstagioDao().listaEstagios();
+        mDB = AppDataBase.getInstance(this);
+        listaEstagios = mDB.getEstagioDao().listaEstagios();
     }
 
     private void AbreTelaEstagioNew()
@@ -78,12 +81,16 @@ public class EstagioActivity extends AppCompatActivity {
         private AppCompatTextView tvCodigo;
         private AppCompatTextView tvNome;
         private AppCompatTextView tvStatus;
+        private AppCompatTextView tvPraga;
+
 
         public MeuHolder(@NonNull View itemView) {
             super(itemView);
             tvCodigo = itemView.findViewById(R.id.tvCodigo);
             tvNome = itemView.findViewById(R.id.tvNome);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvPraga = itemView.findViewById(R.id.tvPraga);
+
 
             if(itemView.findViewById(R.id.tvStatus).toString() == "true")
                 tvStatus.setTextColor(Color.GREEN);
@@ -108,6 +115,9 @@ public class EstagioActivity extends AppCompatActivity {
             holder.tvNome.setText(estagio.getNome().toString());
             holder.tvCodigo.setText(estagio.getID().toString());
             holder.tvStatus.setText(estagio.getStatus().toString());
+            Praga praga = mDB.getPragaDao().ObterPorId(estagio.getPragaId());
+            if(holder.tvPraga != null)
+                holder.tvPraga.setText(praga.getNome());
 
             if(estagio.getStatus().toString() == "Ativo")
                 holder.tvStatus.setTextColor(Color.GREEN);
