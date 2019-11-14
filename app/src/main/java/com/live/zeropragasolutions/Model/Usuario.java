@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class Usuario implements Serializable {
 
     public static final String EXTRA_NAME = "USUARIO";
+
     @PrimaryKey(autoGenerate = true)
     private Integer ID;
 
