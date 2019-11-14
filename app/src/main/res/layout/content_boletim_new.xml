@@ -76,12 +76,12 @@
                             android:layout_weight="2"
                             android:enabled="false" />
 
-
                         <EditText
                             android:id="@+id/txtData"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:inputType="date" />
 
                     </LinearLayout>
 
@@ -111,7 +111,7 @@
                         android:text="Turma"
                         android:textColor="#000" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/txtTurma"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                     android:textColor="#FFFF" />
 
                 <ImageButton
-                    android:id="@+id/btnAtualizarTotalizador"
+                    android:id="@+id/btnPegarLocalizacao"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="0dp"
@@ -201,14 +201,14 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/txtBairro"
+                            android:id="@+id/txtLatitude"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
 
                         <EditText
-                            android:id="@+id/txtCidade"
+                            android:id="@+id/txtLongitude"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -234,28 +234,55 @@
                         <EditText
                             android:id="@+id/txtAltitude"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="10dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Mapa"
-                        android:textColor="#000" />
-
-                    <com.google.android.gms.maps.MapView
-                        android:id="@+id/mapView"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:layout_weight="0.5" />
-
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/ic_barra_buttom_completa"
+                android:padding="0dp"
+                android:textColor="#FFFF" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/ic_barra_topo_completa"
+                android:padding="8dp"
+                android:text="Mapa"
+                android:textColor="#FFFF" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <fragment
+                        android:id="@+id/MapaBoletim"
+                        android:name="com.google.android.gms.maps.MapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
+                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -310,7 +337,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
                             android:text="Qtde."
-                            android:textColor="#000" />
+                            android:textColor="#000"
+                            android:inputType="number"/>
 
                     </LinearLayout>
 
@@ -319,7 +347,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <Spinner
                             android:id="@+id/txtNomePraga"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -330,7 +358,8 @@
                             android:id="@+id/txtQtde"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3" />
+                            android:layout_weight="3"
+                            android:inputType="number"/>
 
                     </LinearLayout>
 
@@ -344,7 +373,7 @@
                         android:text="Estagio"
                         android:textColor="#000" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/txtEstagio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -359,7 +388,7 @@
                         android:text="Tipo de Coleta"
                         android:textColor="#000" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/txtTipoColeta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -368,15 +397,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="10dp" />
 
-                    <Button
-                        android:id="@+id/btnLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:background="@drawable/ic_botao_add_praga"
-                        android:gravity="right"
-                        android:layout_gravity="right"
-                        android:text="Adicionar"
-                        android:textColor="#ffffff" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btnFotoPraga"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/ic_botao_add_praga"
+                            android:text="Adicionar Foto"
+                            android:textColor="#ffffff"
+                            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+                        <ImageButton
+                            android:id="@+id/btnAddPragaLista"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/ic_botao_add_praga"
+                            android:text="Adicionar Praga"
+                            android:textColor="#ffffff"
+                            app:srcCompat="@mipmap/bug" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -446,11 +492,30 @@
                 android:padding="0dp"
                 android:textColor="#FFFF" />
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnSalvar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_botao_add_praga"
+                    android:layout_marginBottom="5dp"
+                    android:text="Salvar Boletim"
+                    android:textColor="#FFF" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
         </LinearLayout>
 
     </ScrollView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

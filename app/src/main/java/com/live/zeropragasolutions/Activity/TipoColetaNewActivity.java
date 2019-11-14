@@ -22,8 +22,10 @@ import com.live.zeropragasolutions.Auxiliares.Utilidades;
 import com.live.zeropragasolutions.Dao.TipoColetaDao;
 import com.live.zeropragasolutions.Dao.UsuarioDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
+import com.live.zeropragasolutions.Model.Estagio;
 import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.Model.TipoColeta;
+import com.live.zeropragasolutions.Model.Turma;
 import com.live.zeropragasolutions.Model.Usuario;
 import com.live.zeropragasolutions.R;
 
@@ -50,6 +52,7 @@ public class TipoColetaNewActivity extends AppCompatActivity {
     private TipoColetaDao contexto = AppDataBase.getInstance(this).getTipoColetaDao();
 
     private List<Praga> listaPraga = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
