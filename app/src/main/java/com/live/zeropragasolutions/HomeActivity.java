@@ -2,14 +2,18 @@ package com.live.zeropragasolutions;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.os.Handler;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,45 +25,55 @@ import com.live.zeropragasolutions.Activity.BoletimNewActivity;
 import com.live.zeropragasolutions.Activity.EstagioActivity;
 import com.live.zeropragasolutions.Activity.PragaActivity;
 import com.live.zeropragasolutions.Activity.TipoColetaActivity;
+import com.live.zeropragasolutions.Activity.TipoColetaNewActivity;
 import com.live.zeropragasolutions.Activity.TurmaActivity;
 import com.live.zeropragasolutions.Activity.UsuarioActivity;
+import com.live.zeropragasolutions.Auxiliares.Utilidades;
 import com.live.zeropragasolutions.Dao.HomeDao;
 import com.live.zeropragasolutions.Dao.UsuarioDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
+import com.live.zeropragasolutions.Model.Boletim;
 import com.live.zeropragasolutions.Model.ObjetoLogin;
 import com.live.zeropragasolutions.Model.Praga;
+import com.live.zeropragasolutions.Model.TipoColeta;
 import com.live.zeropragasolutions.Model.Usuario;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_HOME = 1;
+    private static final int REQUEST_CADASTRO_BOLETIM = 2;
+    private static final int REQUEST_ATUALIZACAO_BOLETIM = 3;
 
     // Variaveis
-    Usuario meuCadastro = new Usuario();
+    public static Usuario meuCadastro = new Usuario();
 
-    // Botões
-    private  NavigationView navigationView;
+    // Componentes
+    private NavigationView navigationView;
     private FloatingActionButton btnNovo;
 
     private TextView lblQtdeBoletins;
-    private TextView lblTotalBoletins;
     private TextView lblQtdePragas;
     private TextView lblQtdeEstagio;
     private TextView lblQtdeTipoColeta;
@@ -69,6 +83,10 @@ public class HomeActivity extends AppCompatActivity
 
     private LinearLayout barraTotalizador;
     private CardView cardTotalizador;
+
+    private RecyclerView rvInformacoes;
+
+    private List<Boletim> listaBoletins = new ArrayList<>();
 
     private HomeDao contexto = AppDataBase.getInstance(this).getHomeDao();
 
@@ -93,6 +111,12 @@ public class HomeActivity extends AppCompatActivity
         // Inicializa os Botões
         inicializaComponenetes();
 
+        // Recebe a Lista de Boletins
+        carregaInformacoes();
+
+        // Monta o Adapter
+        inicializaAdapter();
+
         // Monta Menu User / Admin
         montaMenuUserAdmin();
 
@@ -108,11 +132,9 @@ public class HomeActivity extends AppCompatActivity
 
         btnAtualizarTotalizador.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                montaListaContadores();
+            public void onClick(View view) { montaListaContadores();
             }
         });
-
 
     }
 
@@ -181,7 +203,6 @@ public class HomeActivity extends AppCompatActivity
     private void inicializaComponenetes() {
         btnNovo = (FloatingActionButton) findViewById(R.id.fab);
         lblQtdeBoletins = findViewById(R.id.lblQtdeBoletins);
-        lblTotalBoletins = findViewById(R.id.lblTotalBoletins);
         lblQtdePragas = findViewById(R.id.lblQtdePraga);
         lblQtdeEstagio = findViewById(R.id.lblQtdeEstagio);
         lblQtdeTipoColeta = findViewById(R.id.lblQtdeTipoColeta);
@@ -191,21 +212,32 @@ public class HomeActivity extends AppCompatActivity
 
         barraTotalizador = findViewById(R.id.barraTotalizador);
         cardTotalizador = findViewById(R.id.cardTotalizador);
+
+        rvInformacoes = findViewById(R.id.rvInformacoes);
+
     }
 
     private void montaListaContadores()
     {
-        lblQtdeBoletins.setText("0");
+        lblQtdeBoletins.setText(contexto.getContaTodosBoletins().toString());
         lblQtdePragas.setText(contexto.getContaTodasPrgas().toString());
         lblQtdeEstagio.setText(contexto.getContaTodosEstagio().toString());
         lblQtdeTipoColeta.setText(contexto.getContaTodosTipoColeta().toString());
         lblQtdeTurma.setText(contexto.getContaTodasTurmas().toString());
+    }
 
-        if(meuCadastro.getTipoConta() == 0) {
-            lblTotalBoletins.setText("0");
-        }else if(meuCadastro.getTipoConta() == 1){
-            lblTotalBoletins.setText("10");
-        }
+    private void carregaInformacoes(){
+
+        if(meuCadastro.getTipoConta() == 1)
+            listaBoletins = contexto.listaBoletins();
+        else if (meuCadastro.getTipoConta() == 0)
+            listaBoletins = contexto.listaBoletinsFiscal(meuCadastro.getID());
+
+    }
+
+    private void inicializaAdapter(){
+        HomeActivity.MeuAdapter meuAdapter = new HomeActivity.MeuAdapter();
+        rvInformacoes.setAdapter(meuAdapter);
     }
 
     @SuppressLint("RestrictedApi")
@@ -261,7 +293,151 @@ public class HomeActivity extends AppCompatActivity
     private void AbreTelaBoletimNovo()
     {
         Intent telaBoletimNovo = new Intent(this, BoletimNewActivity.class);
-        startActivity(telaBoletimNovo);
+        startActivityForResult(telaBoletimNovo, REQUEST_CADASTRO_BOLETIM);
+    }
+
+    private class MeuHolder extends RecyclerView.ViewHolder {
+
+        private AppCompatTextView tvCodigo;
+        private AppCompatTextView tvData;
+        private AppCompatTextView tvPraga;
+        private AppCompatTextView tvQuantidade;
+        private AppCompatTextView tvEstagio;
+        private AppCompatTextView tvTipoColeta;
+        private AppCompatTextView tvNomeFiscal;
+        private AppCompatTextView tvStatus;
+
+        public MeuHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvCodigo = itemView.findViewById(R.id.tvCodigo);
+            tvData = itemView.findViewById(R.id.tvData);
+            tvPraga = itemView.findViewById(R.id.tvPraga);
+            tvQuantidade = itemView.findViewById(R.id.tvQuantidade);
+            tvEstagio = itemView.findViewById(R.id.tvEstagio);
+            tvTipoColeta = itemView.findViewById(R.id.tvTipoColeta);
+            tvNomeFiscal = itemView.findViewById(R.id.tvNomeFiscal);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
+
+            if (itemView.findViewById(R.id.tvStatus).toString() == "Ativo")
+                tvStatus.setTextColor(Color.GREEN);
+            else if (itemView.findViewById(R.id.tvStatus).toString() == "Inativo")
+                tvStatus.setTextColor(Color.RED);
+        }
+    }
+
+    private class MeuAdapter extends RecyclerView.Adapter<HomeActivity.MeuHolder> {
+        @NonNull
+        @Override
+        public HomeActivity.MeuHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            HomeActivity.MeuHolder meuHolder
+                    = new HomeActivity.MeuHolder(getLayoutInflater().inflate(R.layout.item_boletim, parent, false));
+            return meuHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull HomeActivity.MeuHolder holder, final int position) {
+
+            final Boletim boletim = listaBoletins.get(position);
+
+            String Codigo = new Utilidades().FormataCodigo(boletim.getID());
+
+            holder.tvCodigo.setText(Codigo);
+            holder.tvData.setText(boletim.getData().toString());
+            holder.tvPraga.setText(boletim.getNomePraga().toString());
+            holder.tvQuantidade.setText(boletim.getQuantidade().toString());
+            holder.tvEstagio.setText(boletim.getEstagio().toString());
+            holder.tvTipoColeta.setText(boletim.getTipoColeta().toString());
+            holder.tvNomeFiscal.setText(boletim.getFiscal().toString());
+            holder.tvStatus.setText(boletim.getStatus().toString());
+
+
+            if (boletim.getStatus().toString() == "Ativo")
+                holder.tvStatus.setTextColor(Color.GREEN);
+            else if (boletim.getStatus().toString() == "Inativo")
+                holder.tvStatus.setTextColor(Color.RED);
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Boletim tp = new Boletim();
+
+                    for (Boletim item : listaBoletins) {
+                        if (item.getID() == (position + 1)) {
+                            tp.setStatus(true);
+                            tp = item;
+                        }
+                    }
+
+                    int retorno = contexto.Desativar(tp.getID());
+
+                    listaBoletins = contexto.listaBoletins();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvInformacoes.getAdapter().notifyDataSetChanged();
+                        }
+                    }, 1000);
+
+
+                    //notifyItemRemoved(position);
+                    return true;
+                }
+
+            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent telaCadastro = new Intent(HomeActivity.this, BoletimNewActivity.class);
+                    telaCadastro.putExtra(Boletim.EXTRA_NAME, (Serializable) boletim);
+                    startActivityForResult(telaCadastro, REQUEST_ATUALIZACAO_BOLETIM);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return listaBoletins.size();
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CADASTRO_BOLETIM:
+                if (resultCode == RESULT_OK) {
+
+                    Boletim bol = (Boletim) data.getSerializableExtra(Boletim.EXTRA_NAME);
+
+                    listaBoletins.add(0, bol);
+                    rvInformacoes.getAdapter().notifyItemInserted(0);
+                }
+                break;
+            case REQUEST_ATUALIZACAO_BOLETIM:
+                if (resultCode == RESULT_OK) {
+
+                    final Boletim bol = (Boletim) data.getSerializableExtra(Boletim.EXTRA_NAME);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < listaBoletins.size(); i++) {
+                                if (listaBoletins.get(i).getID().equals(bol.getID()))
+                                {
+                                    listaBoletins.set(i, bol);
+                                    rvInformacoes.getAdapter().notifyItemChanged(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }, 1000);
+
+                }
+                break;
+        }
     }
 
 }

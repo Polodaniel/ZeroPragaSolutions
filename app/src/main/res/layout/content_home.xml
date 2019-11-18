@@ -23,7 +23,7 @@
             android:layout_marginBottom="0dp"
             android:layout_weight="0.5"
             android:background="@drawable/ic_topo_card_home"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="Totalizadores"
             android:textColor="#FFFF" />
 
@@ -185,53 +185,21 @@
             android:layout_marginRight="0dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="0.5"
-            android:background="@drawable/ic_topo_card_home"
-            android:padding="10dp"
-            android:text="Boletins Lançados"
-            android:textColor="#FFFF" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/ic_top_card_reto"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="Total:"
-            android:textColor="#FFFF" />
-
-        <TextView
-            android:id="@+id/lblTotalBoletins"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/ic_topo_card_esq"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="0"
+            android:background="@drawable/ic_barra_topo_completa"
+            android:padding="8dp"
+            android:text="Boletins Apontados"
             android:textColor="#FFFF" />
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvInformacoes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_boletim" />
 
-        // Aqui vem os Cards dos boletins
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-
-
-        </androidx.cardview.widget.CardView>
-
-
-    </ScrollView>
 
 </LinearLayout>

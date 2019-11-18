@@ -168,7 +168,6 @@ public class PragaNewActivity extends AppCompatActivity {
         } else {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
         }
-
     }
 
     public void tirarFoto() {

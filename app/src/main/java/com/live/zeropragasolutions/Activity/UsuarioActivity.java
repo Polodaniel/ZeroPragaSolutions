@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +17,8 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.live.zeropragasolutions.Dao.PragaDao;
 import com.live.zeropragasolutions.Dao.UsuarioDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
-import com.live.zeropragasolutions.Model.Praga;
 import com.live.zeropragasolutions.Model.Usuario;
 import com.live.zeropragasolutions.R;
 
@@ -94,7 +91,7 @@ public class UsuarioActivity extends AppCompatActivity {
         public MeuHolder(@NonNull View itemView) {
             super(itemView);
             tvCodigo = itemView.findViewById(R.id.tvCodigo);
-            tvNome = itemView.findViewById(R.id.tvNome);
+            tvNome = itemView.findViewById(R.id.tvNomeFiscal);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvTipoConta = itemView.findViewById(R.id.tvTipoConta);
 

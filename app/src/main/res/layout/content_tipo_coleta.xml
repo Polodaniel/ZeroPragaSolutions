@@ -10,9 +10,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:id="@+id/rvInformacoesColeta"
-        tools:listitem="@layout/item_cadastro_tipo_coleta"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_height="match_parent" />
+    android:id="@+id/rvInformacoesColeta"
+    tools:listitem="@layout/item_cadastro_tipo_coleta"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -128,7 +128,7 @@ public class TurmaActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent telaCadastro = new Intent(TurmaActivity.this, PragaNewActivity.class);
+                    Intent telaCadastro = new Intent(TurmaActivity.this, TurmaNewActivity.class);
                     telaCadastro.putExtra(Turma.EXTRA_NAME, (Serializable) praga);
                     startActivityForResult(telaCadastro, REQUEST_ATUALIZACAO_TURMA);
                 }

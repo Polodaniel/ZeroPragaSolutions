@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +20,6 @@ import android.view.ViewGroup;
 import com.live.zeropragasolutions.Dao.PragaDao;
 import com.live.zeropragasolutions.DataBase.AppDataBase;
 import com.live.zeropragasolutions.Model.Praga;
-import com.live.zeropragasolutions.Model.Usuario;
 import com.live.zeropragasolutions.R;
 
 import java.io.Serializable;

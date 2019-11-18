@@ -42,4 +42,5 @@ public interface BoletimDao {
 
     @Query("SELECT * FROM Turma ORDER BY ID")
     List<Turma> listaTurma();
+
 }

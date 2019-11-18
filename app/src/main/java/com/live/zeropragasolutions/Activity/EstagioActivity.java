@@ -137,7 +137,7 @@ public class EstagioActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent telaCadastro = new Intent(EstagioActivity.this, PragaNewActivity.class);
+                    Intent telaCadastro = new Intent(EstagioActivity.this, EstagioNewActivity.class);
                     telaCadastro.putExtra(Estagio.EXTRA_NAME, (Serializable) estagio);
                     startActivityForResult(telaCadastro, REQUEST_ATUALIZACAO_ESTAGIO);
                 }
