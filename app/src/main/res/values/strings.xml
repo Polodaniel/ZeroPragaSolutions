@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ZeroPragaSolutions</string>
+    <string name="app_name">Zero Praga Solutions</string>
     <string name="title_activity_home">Zero Praga</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -40,5 +40,8 @@
     <string name="menu_usuario">Usuário</string>
     <string name="ContaInativa">Conta esta Inativada !</string>
     <string name="title_activity_boletim_new">Novo Boletim</string>
+    <string name="LatitudeInvalida">Latitude Invalida.</string>
+    <string name="LongitudeInvalida">Longitude Invalida !</string>
+    <string name="AltitudeInvalida">Altitude Invalida.</string>
 
 </resources>
