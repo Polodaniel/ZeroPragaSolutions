@@ -70,6 +70,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -166,6 +167,13 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    private void cancelaCapturaLocalizacao()
+    {
+        //Cancela o listener de atualização
+        if(locationClient != null)
+            locationClient.removeLocationUpdates(locationCallback);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -229,7 +237,10 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
         ImagemTirada = (ImageView) findViewById(R.id.imgPraga);
 
-        txtData.setText("15/11/2019");
+        SimpleDateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
+        Date data = new Date();
+
+        txtData.setText(formataData.format(data).toString());
     }
 
     public void tirarFoto() {
@@ -256,17 +267,40 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
                 MapaBoletim.animateCamera(cameraUpdate);
             }
         });
+
+        if(boletim != null )
+        {
+            cancelaCapturaLocalizacao();
+
+            LatLng LocalizacaoSalva = new LatLng(boletim.getLatitude(),boletim.getLongitude());
+
+            adicionaMarcadorConsulta(LocalizacaoSalva);
+
+            CameraUpdate cameraUpdate = CameraUpdateFactory
+                    .newCameraPosition(CameraPosition.fromLatLngZoom(new LatLng(boletim.getLatitude(),boletim.getLongitude()), 19));
+
+            MapaBoletim.animateCamera(cameraUpdate);
+        }
     }
 
     private void adicionaMarcador(LatLng localizacao) {
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(localizacao);
-        markerOptions.title("Minha posição atual");
+        markerOptions.title("Praga Localizada nesse local !");
         markerOptions.draggable(true);
 
         marker = MapaBoletim.addMarker(markerOptions);
 
         adicionarLocalizacaoTextBox();
+    }
+
+    private void adicionaMarcadorConsulta(LatLng localizacao) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(localizacao);
+        markerOptions.title("Praga Localizada nesse local !");
+        markerOptions.draggable(true);
+
+        marker = MapaBoletim.addMarker(markerOptions);
     }
 
     @SuppressLint("MissingPermission")
@@ -340,6 +374,8 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
         txtID.setEnabled(false);
 
+        txtData.setEnabled(false);
+
         txtID.setText(contexto.getProximoCodigo().toString());
     }
 
@@ -357,6 +393,18 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
     private void carregaInformacoesParaAtualizacao() {
 
         txtID.setEnabled(false);
+        txtLatitude.setEnabled(false);
+        txtLongitude.setEnabled(false);
+        txtAltitude.setEnabled(false);
+        txtData.setEnabled(false);
+        txtFiscal.setEnabled(false);
+        txtQuantidade.setEnabled(false);
+        txtTurma.setEnabled(false);
+        txtNomePraga.setEnabled(false);
+        txtEstagio.setEnabled(false);
+        txtTipoColeta.setEnabled(false);
+        btnFotoPraga.setEnabled(false);
+        btnSalvar.setEnabled(false);
 
         txtID.setText(boletim.getID().toString());
 
@@ -366,15 +414,16 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
         txtData.setText(boletim.getData().toString());
         txtFiscal.setText(boletim.getFiscal().toString());
         txtQuantidade.setText(boletim.getQuantidade().toString());
-        //txtTurma.setSelection(boletim.getCodigoTurma());
-        //txtNomePraga.setSelection(boletim.getCodigoPraga());
-        //txtEstagio.setSelection(boletim.getCodigoEstagio());
-        //txtTipoColeta.setSelection(boletim.getCodigoTipoColeta());
+        txtTurma.setSelection((Integer.parseInt(boletim.getCodigoTurma().toString()))-1);
+        txtNomePraga.setSelection((Integer.parseInt(boletim.getCodigoPraga().toString()))-1);
+        txtEstagio.setSelection((Integer.parseInt(boletim.getCodigoEstagio().toString()))-1);
+        txtTipoColeta.setSelection((Integer.parseInt(boletim.getCodigoTipoColeta().toString()))-1);
 
         if (boletim.getFotoPragaTirada() != null) {
             Bitmap imagem = BitmapFactory.decodeByteArray(boletim.getFotoPragaTirada(), 0, boletim.getFotoPragaTirada().length);
             ImagemTirada.setImageBitmap(imagem);
         }
+
     }
 
     private void Salvar() {
@@ -401,25 +450,25 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
             // Praga
             String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
-            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0,6));
+            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
             meuBoletim.setCodigoPraga(CodigoPragaInt);
             meuBoletim.setNomePraga(PragaSelecionada.substring(9));
 
             // Estagio
             String EstagioSelecionada = txtEstagio.getSelectedItem().toString();
-            Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0,6));
+            Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0, 6));
             meuBoletim.setCodigoEstagio(CodigoEstagioInt);
             meuBoletim.setEstagio(EstagioSelecionada.substring(9));
 
             // TipoColeta
             String TipoColetaSelecionada = txtTipoColeta.getSelectedItem().toString();
-            Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0,6));
+            Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0, 6));
             meuBoletim.setCodigoTipoColeta(CodigoTipoColetaInt);
             meuBoletim.setTipoColeta(TipoColetaSelecionada.substring(9));
 
             // Turma
             String TurmaSelecionada = txtTurma.getSelectedItem().toString();
-            Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0,6));
+            Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0, 6));
             meuBoletim.setCodigoTurma(CodigoTurmaInt);
             meuBoletim.setTurma(TurmaSelecionada.substring(9));
 
@@ -460,25 +509,25 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
             // Praga
             String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
-            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0,6));
+            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
             boletim.setCodigoPraga(CodigoPragaInt);
             boletim.setNomePraga(PragaSelecionada.substring(9));
 
             // Estagio
             String EstagioSelecionada = txtEstagio.getSelectedItem().toString();
-            Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0,6));
+            Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0, 6));
             boletim.setCodigoEstagio(CodigoEstagioInt);
             boletim.setEstagio(EstagioSelecionada.substring(9));
 
             // TipoColeta
             String TipoColetaSelecionada = txtTipoColeta.getSelectedItem().toString();
-            Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0,6));
+            Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0, 6));
             boletim.setCodigoTipoColeta(CodigoTipoColetaInt);
             boletim.setTipoColeta(TipoColetaSelecionada.substring(9));
 
             // Turma
             String TurmaSelecionada = txtTurma.getSelectedItem().toString();
-            Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0,6));
+            Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0, 6));
             boletim.setCodigoTurma(CodigoTurmaInt);
             boletim.setTurma(TurmaSelecionada.substring(9));
 
@@ -496,7 +545,7 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
             if (ValidaCampos(meuBoletim)) {
                 int retorno = contexto.update(boletim);
 
-               if (retorno > 0)
+                if (retorno > 0)
                     resultado = true;
             }
         }
@@ -505,49 +554,43 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
         if (resultado) {
             Mensagens.mostraMensagem(this, R.string.SalvarSucesso);
 
-             Intent data = new Intent();
-             data.putExtra(Boletim.EXTRA_NAME, meuBoletim);
+            Intent data = new Intent();
+            data.putExtra(Boletim.EXTRA_NAME, meuBoletim);
 
             setResult(RESULT_OK, data);
 
-              this.finish();
-          } else {
-              Mensagens.mostraMensagem(this, R.string.SalvarErro);
-          }
+            this.finish();
+        } else {
+            Mensagens.mostraMensagem(this, R.string.SalvarErro);
+        }
 
     }
 
     private boolean ValidaCampos(Boletim bol) {
 
         if (bol.getLatitude().toString().isEmpty()) {
-            Mensagens.mostraMensagem(this,R.string.LatitudeInvalida);
+            Mensagens.mostraMensagem(this, R.string.LatitudeInvalida);
             return false;
-        }
-        else if (bol.getLongitude().toString().isEmpty()) {
-            Mensagens.mostraMensagem(this,R.string.LongitudeInvalida);
+        } else if (bol.getLongitude().toString().isEmpty()) {
+            Mensagens.mostraMensagem(this, R.string.LongitudeInvalida);
             return false;
-        }
-        else if (bol.getAltitude().toString().isEmpty()) {
-            Mensagens.mostraMensagem(this,R.string.AltitudeInvalida);
+        } else if (bol.getAltitude().toString().isEmpty()) {
+            Mensagens.mostraMensagem(this, R.string.AltitudeInvalida);
             return false;
-        }else if(bol.getData().isEmpty())
+        } else if (bol.getData().isEmpty())
             return false;
-        else if(bol.getFiscal().isEmpty())
+        else if (bol.getFiscal().isEmpty())
             return false;
-        else if(bol.getTurma().isEmpty())
+        else if (bol.getTurma().isEmpty())
             return false;
-        else if(bol.getNomePraga().isEmpty())
+        else if (bol.getNomePraga().isEmpty())
             return false;
-        else if(bol.getQuantidade().toString().isEmpty())
+        else if (bol.getQuantidade().toString().isEmpty())
             return false;
-        else if(bol.getEstagio().isEmpty())
+        else if (bol.getEstagio().isEmpty())
             return false;
-        else if(bol.getTipoColeta().isEmpty())
+        else if (bol.getTipoColeta().isEmpty())
             return false;
-
-
-
-
 
 
         return true;
