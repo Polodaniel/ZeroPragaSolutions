@@ -450,8 +450,6 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
             meuBoletim.setStatus(true);
             meuBoletim.setCodigoFiscal(meuCadastro.getID());
 
-            // Input Spinner
-
             // Praga
             String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
             Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
