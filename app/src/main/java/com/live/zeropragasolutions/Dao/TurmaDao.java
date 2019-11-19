@@ -24,4 +24,6 @@ public interface TurmaDao {
     @Query("SELECT IFNULL(MAX(id),0)+1 FROM Turma")
     public Integer getProximoCodigo();
 
+    @Query("UPDATE Turma set _status = 'true' WHERE ID = :cod ")
+    public int Desativar(Integer cod );
 }

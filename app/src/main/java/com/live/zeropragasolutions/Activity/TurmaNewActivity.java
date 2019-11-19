@@ -123,6 +123,7 @@ public class TurmaNewActivity extends AppCompatActivity {
 
             turma.setNome(txtNome.getText().toString());
             turma.setDescricao(txtDescricao.getText().toString());
+            turma.set_status(true);
 
             minhaTurma = turma;
 

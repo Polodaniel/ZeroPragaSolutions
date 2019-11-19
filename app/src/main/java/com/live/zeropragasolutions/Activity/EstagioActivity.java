@@ -127,9 +127,6 @@ public class EstagioActivity extends AppCompatActivity {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                   // listaEstagios.remove(position);
-                   // notifyItemRemoved(position);
-                   // return true;
 
                     Estagio estagio = new Estagio();
 
