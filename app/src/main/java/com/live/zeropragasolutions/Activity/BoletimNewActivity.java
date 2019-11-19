@@ -406,7 +406,9 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
         txtEstagio.setEnabled(false);
         txtTipoColeta.setEnabled(false);
         btnFotoPraga.setEnabled(false);
-        btnSalvar.setEnabled(false);
+
+        btnSalvar.setEnabled(true);
+        btnSalvar.setText("Ativar Boletim");
 
         txtID.setText(boletim.getID().toString());
 
@@ -496,51 +498,10 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
                 resultado = false;
 
         } else {
-            // Atualizar uma Boletim já
 
-            // Input EditText
-            boletim.setQuantidade(Integer.parseInt(txtQuantidade.getText().toString()));
-            boletim.setData(txtData.getText().toString());
-            //boletim.setFiscal(txtFiscal.getText().toString());
-            boletim.setLatitude(Double.parseDouble(txtLatitude.getText().toString()));
-            boletim.setLongitude(Double.parseDouble(txtLongitude.getText().toString()));
-            boletim.setAltitude(Double.parseDouble(txtAltitude.getText().toString()));
+            // AtualizarBoletim();
+
             boletim.setStatus(true);
-
-            // Input Spinner
-
-            // Praga
-            String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
-            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
-            boletim.setCodigoPraga(CodigoPragaInt);
-            boletim.setNomePraga(PragaSelecionada.substring(9));
-
-            // Estagio
-            String EstagioSelecionada = txtEstagio.getSelectedItem().toString();
-            Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0, 6));
-            boletim.setCodigoEstagio(CodigoEstagioInt);
-            boletim.setEstagio(EstagioSelecionada.substring(9));
-
-            // TipoColeta
-            String TipoColetaSelecionada = txtTipoColeta.getSelectedItem().toString();
-            Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0, 6));
-            boletim.setCodigoTipoColeta(CodigoTipoColetaInt);
-            boletim.setTipoColeta(TipoColetaSelecionada.substring(9));
-
-            // Turma
-            String TurmaSelecionada = txtTurma.getSelectedItem().toString();
-            Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0, 6));
-            boletim.setCodigoTurma(CodigoTurmaInt);
-            boletim.setTurma(TurmaSelecionada.substring(9));
-
-            if (img != null) {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                img.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                img.recycle();
-
-                boletim.setFotoPragaTirada(byteArray);
-            }
 
             meuBoletim = boletim;
 
@@ -564,6 +525,53 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
             this.finish();
         } else {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
+        }
+
+    }
+
+    private void AtualizarBoletim() {
+        // Input EditText
+        boletim.setQuantidade(Integer.parseInt(txtQuantidade.getText().toString()));
+        boletim.setData(txtData.getText().toString());
+        //boletim.setFiscal(txtFiscal.getText().toString());
+        boletim.setLatitude(Double.parseDouble(txtLatitude.getText().toString()));
+        boletim.setLongitude(Double.parseDouble(txtLongitude.getText().toString()));
+        boletim.setAltitude(Double.parseDouble(txtAltitude.getText().toString()));
+        boletim.setStatus(true);
+
+        // Input Spinner
+
+        // Praga
+        String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
+        Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
+        boletim.setCodigoPraga(CodigoPragaInt);
+        boletim.setNomePraga(PragaSelecionada.substring(9));
+
+        // Estagio
+        String EstagioSelecionada = txtEstagio.getSelectedItem().toString();
+        Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0, 6));
+        boletim.setCodigoEstagio(CodigoEstagioInt);
+        boletim.setEstagio(EstagioSelecionada.substring(9));
+
+        // TipoColeta
+        String TipoColetaSelecionada = txtTipoColeta.getSelectedItem().toString();
+        Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0, 6));
+        boletim.setCodigoTipoColeta(CodigoTipoColetaInt);
+        boletim.setTipoColeta(TipoColetaSelecionada.substring(9));
+
+        // Turma
+        String TurmaSelecionada = txtTurma.getSelectedItem().toString();
+        Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0, 6));
+        boletim.setCodigoTurma(CodigoTurmaInt);
+        boletim.setTurma(TurmaSelecionada.substring(9));
+
+        if (img != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            img.recycle();
+
+            boletim.setFotoPragaTirada(byteArray);
         }
 
     }
