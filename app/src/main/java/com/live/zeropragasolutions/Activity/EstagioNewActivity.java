@@ -122,12 +122,17 @@ public class EstagioNewActivity extends AppCompatActivity implements AdapterView
             meuEstagio.setPragaId(pragaSelecionada.ID);
             meuEstagio.set_status(true);
 
-            long[] retorno = AppDataBase.getInstance(this).getEstagioDao().insert(meuEstagio);
+            if (ValidaCampos(meuEstagio)) {
+                long[] retorno = AppDataBase.getInstance(this).getEstagioDao().insert(meuEstagio);
 
-            // Verficica se Salvou de forma correta
-            if (retorno.length > 0) {
-                resultado = true;
-                meuEstagio.setID((int) retorno[0]);
+                // Verficica se Salvou de forma correta
+                if (retorno.length > 0) {
+                    resultado = true;
+                    meuEstagio.setID((int) retorno[0]);
+                }
+            }
+            else {
+                resultado = false;
             }
 
         } else {
@@ -139,11 +144,13 @@ public class EstagioNewActivity extends AppCompatActivity implements AdapterView
 
             meuEstagio = estagio;
 
-            int retorno = AppDataBase.getInstance(this).getEstagioDao().update(estagio);
+            if (ValidaCampos(meuEstagio)) {
+                int retorno = AppDataBase.getInstance(this).getEstagioDao().update(estagio);
 
-            // Verficica se Salvou de forma correta
-            if (retorno > 0)
-                resultado = true;
+                // Verficica se Salvou de forma correta
+                if (retorno > 0)
+                    resultado = true;
+            }
         }
 
 
@@ -161,6 +168,16 @@ public class EstagioNewActivity extends AppCompatActivity implements AdapterView
         {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
         }
+
+    }
+
+    private boolean ValidaCampos(Estagio meuEstagio) {
+        if (meuEstagio.getNome().isEmpty())
+            return false;
+        else if (meuEstagio.getDescricao().isEmpty())
+            return false;
+
+        return true;
 
     }
 

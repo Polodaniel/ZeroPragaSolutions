@@ -120,12 +120,16 @@ public class PragaNewActivity extends AppCompatActivity {
                 minhaPraga.setFotoPraga(byteArray);
             }
 
-            long[] retorno = AppDataBase.getInstance(this).getPragaDao().insert(minhaPraga);
+            if (ValidaCampos(minhaPraga)) {
+                long[] retorno = AppDataBase.getInstance(this).getPragaDao().insert(minhaPraga);
 
-            // Verficica se Salvou de forma correta
-            if (retorno.length > 0) {
-                resultado = true;
-                minhaPraga.setID((int) retorno[0]);
+                // Verficica se Salvou de forma correta
+                if (retorno.length > 0) {
+                    resultado = true;
+                    minhaPraga.setID((int) retorno[0]);
+                }
+            } else {
+                resultado = false;
             }
 
         } else {
@@ -148,11 +152,14 @@ public class PragaNewActivity extends AppCompatActivity {
 
             minhaPraga = praga;
 
-            int retorno = AppDataBase.getInstance(this).getPragaDao().update(praga);
+            if (ValidaCampos(praga)) {
+                int retorno = AppDataBase.getInstance(this).getPragaDao().update(praga);
 
-            // Verficica se Salvou de forma correta
-            if (retorno > 0)
-                resultado = true;
+                // Verficica se Salvou de forma correta
+                if (retorno > 0)
+                    resultado = true;
+            }
+
         }
 
 
@@ -168,6 +175,17 @@ public class PragaNewActivity extends AppCompatActivity {
         } else {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
         }
+    }
+
+    private boolean ValidaCampos(Praga minhaPraga) {
+
+        if (minhaPraga.getNome().isEmpty())
+            return false;
+        else if (minhaPraga.getDescricao().isEmpty())
+            return false;
+
+        return true;
+
     }
 
     public void tirarFoto() {

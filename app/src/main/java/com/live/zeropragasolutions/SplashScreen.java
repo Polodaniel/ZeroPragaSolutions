@@ -6,6 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.live.zeropragasolutions.Dao.PragaDao;
+import com.live.zeropragasolutions.DataBase.AppDataBase;
+import com.live.zeropragasolutions.Model.Praga;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
@@ -21,8 +28,6 @@ public class SplashScreen extends AppCompatActivity {
                 SplashScreen.this.finish();
             }
         },3000);
-
-
 
     }
 }

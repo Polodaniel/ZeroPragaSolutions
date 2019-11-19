@@ -107,12 +107,15 @@ public class TurmaNewActivity extends AppCompatActivity {
             minhaTurma.setDescricao(txtDescricao.getText().toString());
             minhaTurma.set_status(true);
 
-            long[] retorno = AppDataBase.getInstance(this).getTurmaDao().insert(minhaTurma);
 
-            // Verficica se Salvou de forma correta
-            if (retorno.length > 0) {
-                resultado = true;
-                minhaTurma.setID((int) retorno[0]);
+            if (ValidaCampos(minhaTurma)) {
+                long[] retorno = AppDataBase.getInstance(this).getTurmaDao().insert(minhaTurma);
+
+                // Verficica se Salvou de forma correta
+                if (retorno.length > 0) {
+                    resultado = true;
+                    minhaTurma.setID((int) retorno[0]);
+                }
             }
 
         } else {
@@ -146,6 +149,15 @@ public class TurmaNewActivity extends AppCompatActivity {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
         }
 
+    }
+
+    private boolean ValidaCampos(Turma minhaTurma) {
+        if (minhaTurma.getNome().isEmpty())
+            return false;
+        else if (minhaTurma.getDescricao().isEmpty())
+            return false;
+
+        return true;
     }
 
     public void tirarFoto() {
