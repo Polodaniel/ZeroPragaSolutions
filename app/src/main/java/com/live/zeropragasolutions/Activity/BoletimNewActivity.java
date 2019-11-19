@@ -241,6 +241,8 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
         Date data = new Date();
 
         txtData.setText(formataData.format(data).toString());
+
+        txtQuantidade.setText("0");
     }
 
     public void tirarFoto() {

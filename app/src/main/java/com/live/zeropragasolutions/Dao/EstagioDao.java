@@ -24,4 +24,7 @@ public interface EstagioDao {
     @Query("SELECT IFNULL(MAX(id),0)+1 FROM Estagio")
     public Integer getProximoCodigo();
 
+    @Query("UPDATE Estagio set _status = 'true' WHERE ID = :cod ")
+    public int Desativar(Integer cod );
+
 }

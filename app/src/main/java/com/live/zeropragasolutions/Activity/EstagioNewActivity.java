@@ -141,6 +141,7 @@ public class EstagioNewActivity extends AppCompatActivity implements AdapterView
             estagio.setNome(txtNome.getText().toString());
             estagio.setDescricao(txtDescricao.getText().toString());
             estagio.setPragaId(pragaSelecionada.ID);
+            estagio.set_status(true);
 
             meuEstagio = estagio;
 

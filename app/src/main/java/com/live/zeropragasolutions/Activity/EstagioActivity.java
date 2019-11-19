@@ -127,8 +127,34 @@ public class EstagioActivity extends AppCompatActivity {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listaEstagios.remove(position);
-                    notifyItemRemoved(position);
+                   // listaEstagios.remove(position);
+                   // notifyItemRemoved(position);
+                   // return true;
+
+                    Estagio estagio = new Estagio();
+
+                    for(Estagio item : listaEstagios )
+                    {
+                        if(item.getID() == (position+1))
+                        {
+                            estagio.set_status(true);
+                            estagio = item;
+                        }
+                    }
+
+                    int retorno = mDB.getEstagioDao().Desativar(estagio.getID());
+
+                    listaEstagios = mDB.getEstagioDao().listaEstagios();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvInformacoes.getAdapter().notifyDataSetChanged();
+                        }
+                    }, 1000);
+
+
+                    //notifyItemRemoved(position);
                     return true;
                 }
 
