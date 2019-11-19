@@ -34,6 +34,8 @@ public class TurmaActivity extends AppCompatActivity {
     //
     private List<Turma> listaTrumas = new ArrayList<>();
 
+    private AppDataBase mDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,7 @@ public class TurmaActivity extends AppCompatActivity {
     }
 
     private void carregaInformacoes() {
+        mDB = AppDataBase.getInstance(this);
         listaTrumas = AppDataBase.getInstance(this).getTurmaDao().listaTurmas();
     }
 
@@ -118,8 +121,31 @@ public class TurmaActivity extends AppCompatActivity {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listaTrumas.remove(position);
-                    notifyItemRemoved(position);
+
+                    Turma turma = new Turma();
+
+                    for(Turma item : listaTrumas )
+                    {
+                        if(item.getID() == (position+1))
+                        {
+                            turma.set_status(true);
+                            turma = item;
+                        }
+                    }
+
+                    int retorno = mDB.getTurmaDao().Desativar(turma.getID());
+
+                    listaTrumas = mDB.getTurmaDao().listaTurmas();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvInformacoes.getAdapter().notifyDataSetChanged();
+                        }
+                    }, 1000);
+
+
+                    //notifyItemRemoved(position);
                     return true;
                 }
 
