@@ -404,6 +404,7 @@ public class HomeActivity extends AppCompatActivity
         @Override
         public int getItemCount() {
             return listaBoletins.size();
+
         }
     }
 
