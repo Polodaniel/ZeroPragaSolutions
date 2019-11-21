@@ -28,6 +28,7 @@ import com.live.zeropragasolutions.Activity.TipoColetaActivity;
 import com.live.zeropragasolutions.Activity.TipoColetaNewActivity;
 import com.live.zeropragasolutions.Activity.TurmaActivity;
 import com.live.zeropragasolutions.Activity.UsuarioActivity;
+import com.live.zeropragasolutions.Auxiliares.Mensagens;
 import com.live.zeropragasolutions.Auxiliares.Utilidades;
 import com.live.zeropragasolutions.Dao.HomeDao;
 import com.live.zeropragasolutions.Dao.UsuarioDao;
@@ -357,36 +358,38 @@ public class HomeActivity extends AppCompatActivity
             else if (boletim.getStatus().toString() == "Inativo")
                 holder.tvStatus.setTextColor(Color.RED);
 
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
+            if(meuCadastro.getTipoConta() == 1 ) {
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
 
-                    Boletim tp = new Boletim();
+                        Boletim tp = new Boletim();
 
-                    for (Boletim item : listaBoletins) {
-                        if (item.getID() == (position + 1)) {
-                            tp.setStatus(true);
-                            tp = item;
+                        for (Boletim item : listaBoletins) {
+                            if (item.getID() == (position + 1)) {
+                                tp.setStatus(true);
+                                tp = item;
+                            }
                         }
+
+                        int retorno = contexto.Desativar(tp.getID());
+
+                        listaBoletins = contexto.listaBoletins();
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                rvInformacoes.getAdapter().notifyDataSetChanged();
+                            }
+                        }, 1000);
+
+
+                        //notifyItemRemoved(position);
+                        return true;
                     }
 
-                    int retorno = contexto.Desativar(tp.getID());
-
-                    listaBoletins = contexto.listaBoletins();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            rvInformacoes.getAdapter().notifyDataSetChanged();
-                        }
-                    }, 1000);
-
-
-                    //notifyItemRemoved(position);
-                    return true;
-                }
-
-            });
+                });
+            }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

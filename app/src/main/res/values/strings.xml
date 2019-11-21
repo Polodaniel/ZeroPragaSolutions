@@ -43,5 +43,6 @@
     <string name="LatitudeInvalida">Latitude Invalida.</string>
     <string name="LongitudeInvalida">Longitude Invalida !</string>
     <string name="AltitudeInvalida">Altitude Invalida.</string>
+    <string name="NaoPermitido">Ops! Não tem Permissão.</string>
 
 </resources>
