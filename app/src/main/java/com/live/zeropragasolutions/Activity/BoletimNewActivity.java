@@ -129,7 +129,7 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
         InicializaComponentes();
 
-        CarregasSpnnier();
+        //CarregasSpnnier();
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,6 +372,56 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    private void CarregasSpnnierAtivos() {
+
+        listaPraga = contexto.listaPragasAtivos();
+        listaEstagio = contexto.listaEstagiosAtivos();
+        listaTipoColeta = contexto.listaTipoColetaAtivos();
+        listaTurma = contexto.listaTurmaAtivos();
+
+        List<String> listaPragasComboBox = new ArrayList<String>();
+        List<String> listaPragasEstagioComboBox = new ArrayList<String>();
+        List<String> listaTipoColetaComboBox = new ArrayList<String>();
+        List<String> listaTurmaComboBox = new ArrayList<String>();
+
+        String Codigo;
+
+        for (Praga praga : listaPraga) {
+
+            Codigo = new Utilidades().FormataCodigo(praga.getID());
+
+            listaPragasComboBox.add(Codigo + " - " + praga.getNome());
+        }
+
+        for (Estagio estagio : listaEstagio) {
+            Codigo = new Utilidades().FormataCodigo(estagio.getID());
+            listaPragasEstagioComboBox.add(Codigo + " - " + estagio.getNome());
+        }
+
+        for (TipoColeta tipoColeta : listaTipoColeta) {
+            Codigo = new Utilidades().FormataCodigo(tipoColeta.getId());
+            listaTipoColetaComboBox.add(Codigo + " - " + tipoColeta.getNome());
+        }
+
+        for (Turma turma : listaTurma) {
+            Codigo = new Utilidades().FormataCodigo(turma.getID());
+            listaTurmaComboBox.add(Codigo + " - " + turma.getNome());
+        }
+
+        ArrayAdapter<String> adapterSpinnerPraga = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaPragasComboBox);
+        ArrayAdapter<String> adapterSpinnerEstagio = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaPragasEstagioComboBox);
+        ArrayAdapter<String> adapterSpinnerTipoColeta = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaTipoColetaComboBox);
+        ArrayAdapter<String> adapterSpinnerTurma = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaTurmaComboBox);
+
+        txtNomePraga.setAdapter(adapterSpinnerPraga);
+        txtEstagio.setAdapter(adapterSpinnerEstagio);
+        txtTipoColeta.setAdapter(adapterSpinnerTipoColeta);
+        txtTurma.setAdapter(adapterSpinnerTurma);
+
+        txtFiscal.setText(meuCadastro.getNome().toString());
+
+    }
+
     private void buscaProximoCodigo() {
 
         txtID.setEnabled(false);
@@ -384,9 +434,21 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
     private void carregaInformacoesPassadasPorParametro() {
         Serializable objetoPassado = getIntent().getSerializableExtra(Boletim.EXTRA_NAME);
         if (objetoPassado != null) {
+            CarregasSpnnier();
             boletim = (Boletim) objetoPassado;
             carregaInformacoesParaAtualizacao();
+
+            if(meuCadastro.getTipoConta() == 1)
+            {
+                btnSalvar.setEnabled(true);
+            }
+            else
+            {
+                btnSalvar.setEnabled(false);
+            }
+
         } else {
+            CarregasSpnnierAtivos();
             buscaProximoCodigo();
         }
     }
@@ -406,7 +468,9 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
         txtEstagio.setEnabled(false);
         txtTipoColeta.setEnabled(false);
         btnFotoPraga.setEnabled(false);
-        btnSalvar.setEnabled(false);
+
+        btnSalvar.setEnabled(true);
+        btnSalvar.setText("Ativar Boletim");
 
         txtID.setText(boletim.getID().toString());
 
@@ -447,8 +511,6 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
             meuBoletim.setAltitude(Double.parseDouble(txtAltitude.getText().toString()));
             meuBoletim.setStatus(true);
             meuBoletim.setCodigoFiscal(meuCadastro.getID());
-
-            // Input Spinner
 
             // Praga
             String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
@@ -496,51 +558,10 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
                 resultado = false;
 
         } else {
-            // Atualizar uma Boletim já
 
-            // Input EditText
-            boletim.setQuantidade(Integer.parseInt(txtQuantidade.getText().toString()));
-            boletim.setData(txtData.getText().toString());
-            //boletim.setFiscal(txtFiscal.getText().toString());
-            boletim.setLatitude(Double.parseDouble(txtLatitude.getText().toString()));
-            boletim.setLongitude(Double.parseDouble(txtLongitude.getText().toString()));
-            boletim.setAltitude(Double.parseDouble(txtAltitude.getText().toString()));
+            // AtualizarBoletim();
+
             boletim.setStatus(true);
-
-            // Input Spinner
-
-            // Praga
-            String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
-            Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
-            boletim.setCodigoPraga(CodigoPragaInt);
-            boletim.setNomePraga(PragaSelecionada.substring(9));
-
-            // Estagio
-            String EstagioSelecionada = txtEstagio.getSelectedItem().toString();
-            Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0, 6));
-            boletim.setCodigoEstagio(CodigoEstagioInt);
-            boletim.setEstagio(EstagioSelecionada.substring(9));
-
-            // TipoColeta
-            String TipoColetaSelecionada = txtTipoColeta.getSelectedItem().toString();
-            Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0, 6));
-            boletim.setCodigoTipoColeta(CodigoTipoColetaInt);
-            boletim.setTipoColeta(TipoColetaSelecionada.substring(9));
-
-            // Turma
-            String TurmaSelecionada = txtTurma.getSelectedItem().toString();
-            Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0, 6));
-            boletim.setCodigoTurma(CodigoTurmaInt);
-            boletim.setTurma(TurmaSelecionada.substring(9));
-
-            if (img != null) {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                img.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                img.recycle();
-
-                boletim.setFotoPragaTirada(byteArray);
-            }
 
             meuBoletim = boletim;
 
@@ -564,6 +585,53 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
             this.finish();
         } else {
             Mensagens.mostraMensagem(this, R.string.SalvarErro);
+        }
+
+    }
+
+    private void AtualizarBoletim() {
+        // Input EditText
+        boletim.setQuantidade(Integer.parseInt(txtQuantidade.getText().toString()));
+        boletim.setData(txtData.getText().toString());
+        //boletim.setFiscal(txtFiscal.getText().toString());
+        boletim.setLatitude(Double.parseDouble(txtLatitude.getText().toString()));
+        boletim.setLongitude(Double.parseDouble(txtLongitude.getText().toString()));
+        boletim.setAltitude(Double.parseDouble(txtAltitude.getText().toString()));
+        boletim.setStatus(true);
+
+        // Input Spinner
+
+        // Praga
+        String PragaSelecionada = txtNomePraga.getSelectedItem().toString();
+        Integer CodigoPragaInt = Integer.parseInt(PragaSelecionada.substring(0, 6));
+        boletim.setCodigoPraga(CodigoPragaInt);
+        boletim.setNomePraga(PragaSelecionada.substring(9));
+
+        // Estagio
+        String EstagioSelecionada = txtEstagio.getSelectedItem().toString();
+        Integer CodigoEstagioInt = Integer.parseInt(EstagioSelecionada.substring(0, 6));
+        boletim.setCodigoEstagio(CodigoEstagioInt);
+        boletim.setEstagio(EstagioSelecionada.substring(9));
+
+        // TipoColeta
+        String TipoColetaSelecionada = txtTipoColeta.getSelectedItem().toString();
+        Integer CodigoTipoColetaInt = Integer.parseInt(TipoColetaSelecionada.substring(0, 6));
+        boletim.setCodigoTipoColeta(CodigoTipoColetaInt);
+        boletim.setTipoColeta(TipoColetaSelecionada.substring(9));
+
+        // Turma
+        String TurmaSelecionada = txtTurma.getSelectedItem().toString();
+        Integer CodigoTurmaInt = Integer.parseInt(TurmaSelecionada.substring(0, 6));
+        boletim.setCodigoTurma(CodigoTurmaInt);
+        boletim.setTurma(TurmaSelecionada.substring(9));
+
+        if (img != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            img.recycle();
+
+            boletim.setFotoPragaTirada(byteArray);
         }
 
     }

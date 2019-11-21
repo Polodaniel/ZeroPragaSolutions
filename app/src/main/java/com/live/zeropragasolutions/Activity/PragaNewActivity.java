@@ -313,5 +313,4 @@ public class PragaNewActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-
 }

@@ -10,19 +10,19 @@ import java.util.List;
 @Dao
 public interface HomeDao {
 
-    @Query("SELECT COUNT(*) FROM Praga")
+    @Query("SELECT COUNT(*) FROM Praga WHERE _status != 'true' ")
     public Integer getContaTodasPrgas();
 
-    @Query("SELECT COUNT(*) FROM Estagio")
+    @Query("SELECT COUNT(*) FROM Estagio WHERE _status != 'true' ")
     public Integer getContaTodosEstagio();
 
-    @Query("SELECT COUNT(*) FROM TipoColeta")
+    @Query("SELECT COUNT(*) FROM TipoColeta WHERE Status != 'true' ")
     public Integer getContaTodosTipoColeta();
 
-    @Query("SELECT COUNT(*) FROM Turma")
+    @Query("SELECT COUNT(*) FROM Turma WHERE _status != 'true' ")
     public Integer getContaTodasTurmas();
 
-    @Query("SELECT COUNT(*) FROM Boletim")
+    @Query("SELECT COUNT(*) FROM Boletim WHERE Status != 'true' ")
     public Integer getContaTodosBoletins();
 
     @Query("SELECT * FROM Boletim ORDER BY ID")
