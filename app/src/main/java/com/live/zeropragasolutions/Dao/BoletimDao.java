@@ -43,4 +43,17 @@ public interface BoletimDao {
     @Query("SELECT * FROM Turma ORDER BY ID")
     List<Turma> listaTurma();
 
+    //
+    @Query("SELECT * FROM Praga WHERE _status != 'true' ORDER BY ID")
+    List<Praga> listaPragasAtivos();
+
+    @Query("SELECT * FROM Estagio WHERE _status != 'true' ORDER BY ID")
+    List<Estagio> listaEstagiosAtivos();
+
+    @Query("SELECT * FROM TipoColeta WHERE Status != 'true' ORDER BY ID")
+    List<TipoColeta> listaTipoColetaAtivos();
+
+    @Query("SELECT * FROM Turma WHERE _status != 'true' ORDER BY ID")
+    List<Turma> listaTurmaAtivos();
+
 }

@@ -129,7 +129,7 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
         InicializaComponentes();
 
-        CarregasSpnnier();
+        //CarregasSpnnier();
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,6 +372,56 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    private void CarregasSpnnierAtivos() {
+
+        listaPraga = contexto.listaPragasAtivos();
+        listaEstagio = contexto.listaEstagiosAtivos();
+        listaTipoColeta = contexto.listaTipoColetaAtivos();
+        listaTurma = contexto.listaTurmaAtivos();
+
+        List<String> listaPragasComboBox = new ArrayList<String>();
+        List<String> listaPragasEstagioComboBox = new ArrayList<String>();
+        List<String> listaTipoColetaComboBox = new ArrayList<String>();
+        List<String> listaTurmaComboBox = new ArrayList<String>();
+
+        String Codigo;
+
+        for (Praga praga : listaPraga) {
+
+            Codigo = new Utilidades().FormataCodigo(praga.getID());
+
+            listaPragasComboBox.add(Codigo + " - " + praga.getNome());
+        }
+
+        for (Estagio estagio : listaEstagio) {
+            Codigo = new Utilidades().FormataCodigo(estagio.getID());
+            listaPragasEstagioComboBox.add(Codigo + " - " + estagio.getNome());
+        }
+
+        for (TipoColeta tipoColeta : listaTipoColeta) {
+            Codigo = new Utilidades().FormataCodigo(tipoColeta.getId());
+            listaTipoColetaComboBox.add(Codigo + " - " + tipoColeta.getNome());
+        }
+
+        for (Turma turma : listaTurma) {
+            Codigo = new Utilidades().FormataCodigo(turma.getID());
+            listaTurmaComboBox.add(Codigo + " - " + turma.getNome());
+        }
+
+        ArrayAdapter<String> adapterSpinnerPraga = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaPragasComboBox);
+        ArrayAdapter<String> adapterSpinnerEstagio = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaPragasEstagioComboBox);
+        ArrayAdapter<String> adapterSpinnerTipoColeta = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaTipoColetaComboBox);
+        ArrayAdapter<String> adapterSpinnerTurma = new ArrayAdapter<String>(BoletimNewActivity.this, android.R.layout.simple_spinner_dropdown_item, listaTurmaComboBox);
+
+        txtNomePraga.setAdapter(adapterSpinnerPraga);
+        txtEstagio.setAdapter(adapterSpinnerEstagio);
+        txtTipoColeta.setAdapter(adapterSpinnerTipoColeta);
+        txtTurma.setAdapter(adapterSpinnerTurma);
+
+        txtFiscal.setText(meuCadastro.getNome().toString());
+
+    }
+
     private void buscaProximoCodigo() {
 
         txtID.setEnabled(false);
@@ -384,9 +434,21 @@ public class BoletimNewActivity extends AppCompatActivity implements OnMapReadyC
     private void carregaInformacoesPassadasPorParametro() {
         Serializable objetoPassado = getIntent().getSerializableExtra(Boletim.EXTRA_NAME);
         if (objetoPassado != null) {
+            CarregasSpnnier();
             boletim = (Boletim) objetoPassado;
             carregaInformacoesParaAtualizacao();
+
+            if(meuCadastro.getTipoConta() == 1)
+            {
+                btnSalvar.setEnabled(true);
+            }
+            else
+            {
+                btnSalvar.setEnabled(false);
+            }
+
         } else {
+            CarregasSpnnierAtivos();
             buscaProximoCodigo();
         }
     }
